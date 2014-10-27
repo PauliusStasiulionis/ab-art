@@ -1,0 +1,34 @@
+/* 
+    Created on : 2014-10-26, 15.43.11
+    Author     : Paulius Stasiulionis
+*/
+
+body {
+    background: #f2f2f2;
+}
+#sidebar {
+    background: #333333;
+    width: 135px;
+    margin-left: 32px;
+    padding-top: 32px;
+    padding-bottom: 16px;
+}
+#logo {
+    background-image: url('images/logo.png');
+    background-repeat: no-repeat;
+    height: 74px;
+    width: 74px;
+    margin: 16px auto 0px auto;
+}
+.menu ul{
+    list-style-type: none;
+    padding-left: 20px;
+}
+.menu ul li{
+    margin: 14px 0px 14px 0px;
+}
+.menu ul li a{
+    text-decoration: none;
+    color: #605d5d;
+}
+

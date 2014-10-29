@@ -50,7 +50,8 @@
     <?php wp_head(); ?>
 </head>    
 <body <?php body_class(); ?>>
-    <div id="container">
+    <div id="wrapper">
+        <div id="container">
             
 
     

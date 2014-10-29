@@ -12,7 +12,9 @@
  * @version 2014-10-26
  */
 ?>
-    </div><!-- div container-->
+        </div><!-- div container-->    
+    </div><!-- div wrapper -->
+    
     <?php wp_footer(); ?>
 </body>
 </html>

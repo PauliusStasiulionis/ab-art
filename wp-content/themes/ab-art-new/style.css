@@ -6,22 +6,26 @@
 body {
     background: #f2f2f2;
 }
+#container {
+    overflow: hidden;
+}
+
+
+#wrapper {
+    max-width: 970px;
+    margin: 0 auto;
+}
+/*    sidebar       */
+
 #sidebar {
     background: #333333;
     width: 135px;
     padding-top: 32px;
     padding-bottom: 16px;
+    min-height: 470px;
+    float:left
 }
 
-#wrapper {
-    max-width: 940px;
-    margin: 0 auto;
-}
-/*    sidebar       */
-#sidebar {
-    float: left;
-    
-}
 #logo {
     background-image: url('images/logo.png');
     background-repeat: no-repeat;

@@ -17,8 +17,7 @@ define( 'EZSQL_VERSION', 'WP1.25' );
 /**
  * @since 0.71
  */
-define( 'OBJECT', 'OBJECT' );
-define( 'object', 'OBJECT' ); // Back compat.
+define( 'OBJECT', 'OBJECT', true );
 
 /**
  * @since 2.5.0
@@ -52,10 +51,7 @@ define( 'ARRAY_N', 'ARRAY_N' );
 class wpdb {
 
 	/**
-	 * Whether to show SQL/DB errors.
-	 *
-	 * Default behavior is to show errors if both WP_DEBUG and WP_DEBUG_DISPLAY
-	 * evaluated to true.
+	 * Whether to show SQL/DB errors
 	 *
 	 * @since 0.71
 	 * @access private
@@ -78,7 +74,7 @@ class wpdb {
 	 * @since 2.5.0
 	 * @var string
 	 */
-	public $last_error = '';
+	var $last_error = '';
 
 	/**
 	 * Amount of queries made
@@ -92,7 +88,7 @@ class wpdb {
 	/**
 	 * Count of rows returned by previous query
 	 *
-	 * @since 0.71
+	 * @since 1.2.0
 	 * @access private
 	 * @var int
 	 */
@@ -117,9 +113,9 @@ class wpdb {
 	var $insert_id = 0;
 
 	/**
-	 * Last query made
+	 * Saved result of the last query made
 	 *
-	 * @since 0.71
+	 * @since 1.2.0
 	 * @access private
 	 * @var array
 	 */
@@ -128,29 +124,20 @@ class wpdb {
 	/**
 	 * Results of the last query made
 	 *
-	 * @since 0.71
+	 * @since 1.0.0
 	 * @access private
 	 * @var array|null
 	 */
 	var $last_result;
 
 	/**
-	 * MySQL result, which is either a resource or boolean.
-	 *
-	 * @since 0.71
-	 * @access protected
-	 * @var mixed
-	 */
-	protected $result;
-
-	/**
 	 * Saved info on the table column
 	 *
-	 * @since 0.71
-	 * @access protected
+	 * @since 1.2.0
+	 * @access private
 	 * @var array
 	 */
-	protected $col_info;
+	var $col_info;
 
 	/**
 	 * Saved queries that were executed
@@ -162,41 +149,22 @@ class wpdb {
 	var $queries;
 
 	/**
-	 * The number of times to retry reconnecting before dying.
-	 *
-	 * @since 3.9.0
-	 * @access protected
-	 * @see wpdb::check_connection()
-	 * @var int
-	 */
-	protected $reconnect_retries = 5;
-
-	/**
 	 * WordPress table prefix
 	 *
 	 * You can set this to have multiple WordPress installations
 	 * in a single database. The second reason is for possible
 	 * security precautions.
 	 *
-	 * @since 2.5.0
+	 * @since 0.71
 	 * @access private
 	 * @var string
 	 */
 	var $prefix = '';
 
 	/**
-	 * WordPress base table prefix.
-	 *
-	 * @since 3.0.0
-	 * @access public
-	 * @var string
-	 */
-	 public $base_prefix;
-
-	/**
 	 * Whether the database queries are ready to start executing.
 	 *
-	 * @since 2.3.2
+	 * @since 2.5.0
 	 * @access private
 	 * @var bool
 	 */
@@ -209,7 +177,7 @@ class wpdb {
 	 * @access public
 	 * @var int
 	 */
-	public $blogid = 0;
+	var $blogid = 0;
 
 	/**
 	 * {@internal Missing Description}}
@@ -218,7 +186,7 @@ class wpdb {
 	 * @access public
 	 * @var int
 	 */
-	public $siteid = 0;
+	var $siteid = 0;
 
 	/**
 	 * List of WordPress per-blog tables
@@ -271,7 +239,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $comments;
+	var $comments;
 
 	/**
 	 * WordPress Comment Metadata table
@@ -280,7 +248,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $commentmeta;
+	var $commentmeta;
 
 	/**
 	 * WordPress Links table
@@ -289,7 +257,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $links;
+	var $links;
 
 	/**
 	 * WordPress Options table
@@ -298,7 +266,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $options;
+	var $options;
 
 	/**
 	 * WordPress Post Metadata table
@@ -307,7 +275,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $postmeta;
+	var $postmeta;
 
 	/**
 	 * WordPress Posts table
@@ -316,7 +284,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $posts;
+	var $posts;
 
 	/**
 	 * WordPress Terms table
@@ -325,7 +293,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $terms;
+	var $terms;
 
 	/**
 	 * WordPress Term Relationships table
@@ -334,7 +302,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $term_relationships;
+	var $term_relationships;
 
 	/**
 	 * WordPress Term Taxonomy table
@@ -343,7 +311,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $term_taxonomy;
+	var $term_taxonomy;
 
 	/*
 	 * Global and Multisite tables
@@ -356,7 +324,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $usermeta;
+	var $usermeta;
 
 	/**
 	 * WordPress Users table
@@ -365,7 +333,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $users;
+	var $users;
 
 	/**
 	 * Multisite Blogs table
@@ -374,7 +342,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $blogs;
+	var $blogs;
 
 	/**
 	 * Multisite Blog Versions table
@@ -383,7 +351,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $blog_versions;
+	var $blog_versions;
 
 	/**
 	 * Multisite Registration Log table
@@ -392,7 +360,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $registration_log;
+	var $registration_log;
 
 	/**
 	 * Multisite Signups table
@@ -401,7 +369,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $signups;
+	var $signups;
 
 	/**
 	 * Multisite Sites table
@@ -410,7 +378,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $site;
+	var $site;
 
 	/**
 	 * Multisite Sitewide Terms table
@@ -419,7 +387,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $sitecategories;
+	var $sitecategories;
 
 	/**
 	 * Multisite Site Metadata table
@@ -428,7 +396,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $sitemeta;
+	var $sitemeta;
 
 	/**
 	 * Format specifiers for DB columns. Columns not listed here default to %s. Initialized during WP load.
@@ -436,15 +404,14 @@ class wpdb {
 	 * Keys are column names, values are format types: 'ID' => '%d'
 	 *
 	 * @since 2.8.0
-	 * @see wpdb::prepare()
-	 * @see wpdb::insert()
-	 * @see wpdb::update()
-	 * @see wpdb::delete()
+	 * @see wpdb:prepare()
+	 * @see wpdb:insert()
+	 * @see wpdb:update()
 	 * @see wp_set_wpdb_vars()
 	 * @access public
 	 * @var array
 	 */
-	public $field_types = array();
+	var $field_types = array();
 
 	/**
 	 * Database table columns charset
@@ -453,7 +420,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $charset;
+	var $charset;
 
 	/**
 	 * Database table columns collate
@@ -462,52 +429,25 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $collate;
+	var $collate;
+
+	/**
+	 * Whether to use mysql_real_escape_string
+	 *
+	 * @since 2.8.0
+	 * @access public
+	 * @var bool
+	 */
+	var $real_escape = false;
 
 	/**
 	 * Database Username
 	 *
 	 * @since 2.9.0
-	 * @access protected
+	 * @access private
 	 * @var string
 	 */
-	protected $dbuser;
-
-	/**
-	 * Database Password
-	 *
-	 * @since 3.1.0
-	 * @access protected
-	 * @var string
-	 */
-	protected $dbpassword;
-
-	/**
-	 * Database Name
-	 *
-	 * @since 3.1.0
-	 * @access protected
-	 * @var string
-	 */
-	protected $dbname;
-
-	/**
-	 * Database Host
-	 *
-	 * @since 3.1.0
-	 * @access protected
-	 * @var string
-	 */
-	protected $dbhost;
-
-	/**
-	 * Database Handle
-	 *
-	 * @since 0.71
-	 * @access protected
-	 * @var string
-	 */
-	protected $dbh;
+	var $dbuser;
 
 	/**
 	 * A textual description of the last query/get_row/get_var call
@@ -516,7 +456,7 @@ class wpdb {
 	 * @access public
 	 * @var string
 	 */
-	public $func_call;
+	var $func_call;
 
 	/**
 	 * Whether MySQL is used as the database engine.
@@ -533,34 +473,6 @@ class wpdb {
 	public $is_mysql = null;
 
 	/**
-	 * A list of incompatible SQL modes.
-	 *
-	 * @since 3.9.0
-	 * @access protected
-	 * @var array
-	 */
-	protected $incompatible_modes = array( 'NO_ZERO_DATE', 'ONLY_FULL_GROUP_BY',
-		'STRICT_TRANS_TABLES', 'STRICT_ALL_TABLES', 'TRADITIONAL' );
-
-	/**
-	 * Whether to use mysqli over mysql.
-	 *
-	 * @since 3.9.0
-	 * @access private
-	 * @var bool
-	 */
-	private $use_mysqli = false;
-
-	/**
-	 * Whether we've managed to successfully connect at some point
-	 *
-	 * @since 3.9.0
-	 * @access private
-	 * @var bool
-	 */
-	private $has_connected = false;
-
-	/**
 	 * Connects to the database server and selects a database
 	 *
 	 * PHP5 style constructor for compatibility with PHP5. Does
@@ -575,27 +487,11 @@ class wpdb {
 	 * @param string $dbname MySQL database name
 	 * @param string $dbhost MySQL database host
 	 */
-	public function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
-		register_shutdown_function( array( $this, '__destruct' ) );
+	function __construct( $dbuser, $dbpassword, $dbname, $dbhost ) {
+		register_shutdown_function( array( &$this, '__destruct' ) );
 
-		if ( WP_DEBUG && WP_DEBUG_DISPLAY )
+		if ( WP_DEBUG )
 			$this->show_errors();
-
-		/* Use ext/mysqli if it exists and:
-		 *  - WP_USE_EXT_MYSQL is defined as false, or
-		 *  - We are a development version of WordPress, or
-		 *  - We are running PHP 5.5 or greater, or
-		 *  - ext/mysql is not loaded.
-		 */
-		if ( function_exists( 'mysqli_connect' ) ) {
-			if ( defined( 'WP_USE_EXT_MYSQL' ) ) {
-				$this->use_mysqli = ! WP_USE_EXT_MYSQL;
-			} elseif ( version_compare( phpversion(), '5.5', '>=' ) || ! function_exists( 'mysql_connect' ) ) {
-				$this->use_mysqli = true;
-			} elseif ( false !== strpos( $GLOBALS['wp_version'], '-' ) ) {
-				$this->use_mysqli = true;
-			}
-		}
 
 		$this->init_charset();
 
@@ -603,11 +499,6 @@ class wpdb {
 		$this->dbpassword = $dbpassword;
 		$this->dbname = $dbname;
 		$this->dbhost = $dbhost;
-
-		// wp-config.php creation will manually connect when ready.
-		if ( defined( 'WP_SETUP_CONFIG' ) ) {
-			return;
-		}
 
 		$this->db_connect();
 	}
@@ -619,59 +510,8 @@ class wpdb {
 	 * @since 2.0.8
 	 * @return bool true
 	 */
-	public function __destruct() {
+	function __destruct() {
 		return true;
-	}
-
-	/**
-	 * PHP5 style magic getter, used to lazy-load expensive data.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @param string $name The private member to get, and optionally process
-	 * @return mixed The private member
-	 */
-	public function __get( $name ) {
-		if ( 'col_info' == $name )
-			$this->load_col_info();
-
-		return $this->$name;
-	}
-
-	/**
-	 * Magic function, for backwards compatibility.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @param string $name  The private member to set
-	 * @param mixed  $value The value to set
-	 */
-	public function __set( $name, $value ) {
-		$this->$name = $value;
-	}
-
-	/**
-	 * Magic function, for backwards compatibility.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @param string $name  The private member to check
-	 *
-	 * @return bool If the member is set or not
-	 */
-	public function __isset( $name ) {
-		return isset( $this->$name );
-	}
-
-	/**
-	 * Magic function, for backwards compatibility.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @param string $name  The private member to unset
-	 */
-	public function __unset( $name ) {
-		unset( $this->$name );
 	}
 
 	/**
@@ -679,7 +519,7 @@ class wpdb {
 	 *
 	 * @since 3.1.0
 	 */
-	public function init_charset() {
+	function init_charset() {
 		if ( function_exists('is_multisite') && is_multisite() ) {
 			$this->charset = 'utf8';
 			if ( defined( 'DB_COLLATE' ) && DB_COLLATE )
@@ -703,98 +543,21 @@ class wpdb {
 	 * @param string   $charset The character set (optional)
 	 * @param string   $collate The collation (optional)
 	 */
-	public function set_charset( $dbh, $charset = null, $collate = null ) {
-		if ( ! isset( $charset ) )
+	function set_charset($dbh, $charset = null, $collate = null) {
+		if ( !isset($charset) )
 			$charset = $this->charset;
-		if ( ! isset( $collate ) )
+		if ( !isset($collate) )
 			$collate = $this->collate;
-		if ( $this->has_cap( 'collation' ) && ! empty( $charset ) ) {
-			if ( $this->use_mysqli ) {
-				if ( function_exists( 'mysqli_set_charset' ) && $this->has_cap( 'set_charset' ) ) {
-					mysqli_set_charset( $dbh, $charset );
-				} else {
-					$query = $this->prepare( 'SET NAMES %s', $charset );
-					if ( ! empty( $collate ) )
-						$query .= $this->prepare( ' COLLATE %s', $collate );
-					mysqli_query( $query, $dbh );
-				}
+		if ( $this->has_cap( 'collation', $dbh ) && !empty( $charset ) ) {
+			if ( function_exists( 'mysql_set_charset' ) && $this->has_cap( 'set_charset', $dbh ) ) {
+				mysql_set_charset( $charset, $dbh );
+				$this->real_escape = true;
 			} else {
-				if ( function_exists( 'mysql_set_charset' ) && $this->has_cap( 'set_charset' ) ) {
-					mysql_set_charset( $charset, $dbh );
-				} else {
-					$query = $this->prepare( 'SET NAMES %s', $charset );
-					if ( ! empty( $collate ) )
-						$query .= $this->prepare( ' COLLATE %s', $collate );
-					mysql_query( $query, $dbh );
-				}
+				$query = $this->prepare( 'SET NAMES %s', $charset );
+				if ( ! empty( $collate ) )
+					$query .= $this->prepare( ' COLLATE %s', $collate );
+				mysql_query( $query, $dbh );
 			}
-		}
-	}
-
-	/**
-	 * Change the current SQL mode, and ensure its WordPress compatibility.
-	 *
-	 * If no modes are passed, it will ensure the current MySQL server
-	 * modes are compatible.
-	 *
-	 * @since 3.9.0
-	 *
-	 * @param array $modes Optional. A list of SQL modes to set.
-	 */
-	public function set_sql_mode( $modes = array() ) {
-		if ( empty( $modes ) ) {
-			if ( $this->use_mysqli ) {
-				$res = mysqli_query( $this->dbh, 'SELECT @@SESSION.sql_mode' );
-			} else {
-				$res = mysql_query( 'SELECT @@SESSION.sql_mode', $this->dbh );
-			}
-
-			if ( empty( $res ) ) {
-				return;
-			}
-
-			if ( $this->use_mysqli ) {
-				$modes_array = mysqli_fetch_array( $res );
-				if ( empty( $modes_array[0] ) ) {
-					return;
-				}
-				$modes_str = $modes_array[0];
-			} else {
-				$modes_str = mysql_result( $res, 0 );
-			}
-
-			if ( empty( $modes_str ) ) {
-				return;
-			}
-
-			$modes = explode( ',', $modes_str );
-		}
-
-		$modes = array_change_key_case( $modes, CASE_UPPER );
-
-		/**
-		 * Filter the list of incompatible SQL modes to exclude.
-		 *
-		 * @since 3.9.0
-		 *
-		 * @see wpdb::$incompatible_modes
-		 *
-		 * @param array $incompatible_modes An array of incompatible modes.
-		 */
-		$incompatible_modes = (array) apply_filters( 'incompatible_sql_modes', $this->incompatible_modes );
-
-		foreach( $modes as $i => $mode ) {
-			if ( in_array( $mode, $incompatible_modes ) ) {
-				unset( $modes[ $i ] );
-			}
-		}
-
-		$modes_str = implode( ',', $modes );
-
-		if ( $this->use_mysqli ) {
-			mysqli_query( $this->dbh, "SET SESSION sql_mode='$modes_str'" );
-		} else {
-			mysql_query( "SET SESSION sql_mode='$modes_str'", $this->dbh );
 		}
 	}
 
@@ -807,10 +570,10 @@ class wpdb {
 	 * @param bool $set_table_names Optional. Whether the table names, e.g. wpdb::$posts, should be updated or not.
 	 * @return string|WP_Error Old prefix or WP_Error on error
 	 */
-	public function set_prefix( $prefix, $set_table_names = true ) {
+	function set_prefix( $prefix, $set_table_names = true ) {
 
 		if ( preg_match( '|[^a-z0-9_]|i', $prefix ) )
-			return new WP_Error('invalid_db_prefix', 'Invalid database prefix' );
+			return new WP_Error('invalid_db_prefix', /*WP_I18N_DB_BAD_PREFIX*/'Invalid database prefix'/*/WP_I18N_DB_BAD_PREFIX*/);
 
 		$old_prefix = is_multisite() ? '' : $prefix;
 
@@ -846,7 +609,7 @@ class wpdb {
 	 * @param int $site_id Optional.
 	 * @return string previous blog id
 	 */
-	public function set_blog_id( $blog_id, $site_id = 0 ) {
+	function set_blog_id( $blog_id, $site_id = 0 ) {
 		if ( ! empty( $site_id ) )
 			$this->siteid = $site_id;
 
@@ -872,7 +635,7 @@ class wpdb {
 	 * @param int $blog_id Optional.
 	 * @return string Blog prefix.
 	 */
-	public function get_blog_prefix( $blog_id = null ) {
+	function get_blog_prefix( $blog_id = null ) {
 		if ( is_multisite() ) {
 			if ( null === $blog_id )
 				$blog_id = $this->blogid;
@@ -914,7 +677,7 @@ class wpdb {
 	 * @param int $blog_id Optional. The blog_id to prefix. Defaults to wpdb::$blogid. Used only when prefix is requested.
 	 * @return array Table names. When a prefix is requested, the key is the unprefixed table name.
 	 */
-	public function tables( $scope = 'all', $prefix = true, $blog_id = 0 ) {
+	function tables( $scope = 'all', $prefix = true, $blog_id = 0 ) {
 		switch ( $scope ) {
 			case 'all' :
 				$tables = array_merge( $this->global_tables, $this->tables );
@@ -937,6 +700,7 @@ class wpdb {
 				break;
 			default :
 				return array();
+				break;
 		}
 
 		if ( $prefix ) {
@@ -975,57 +739,43 @@ class wpdb {
 	 * @param resource $dbh Optional link identifier.
 	 * @return null Always null.
 	 */
-	public function select( $db, $dbh = null ) {
+	function select( $db, $dbh = null ) {
 		if ( is_null($dbh) )
 			$dbh = $this->dbh;
 
-		if ( $this->use_mysqli ) {
-			$success = @mysqli_select_db( $dbh, $db );
-		} else {
-			$success = @mysql_select_db( $db, $dbh );
-		}
-		if ( ! $success ) {
+		if ( !@mysql_select_db( $db, $dbh ) ) {
 			$this->ready = false;
-			if ( ! did_action( 'template_redirect' ) ) {
-				wp_load_translations_early();
-				$this->bail( sprintf( __( '<h1>Can&#8217;t select database</h1>
+			$this->bail( sprintf( /*WP_I18N_DB_SELECT_DB*/'<h1>Can&#8217;t select database</h1>
 <p>We were able to connect to the database server (which means your username and password is okay) but not able to select the <code>%1$s</code> database.</p>
 <ul>
 <li>Are you sure it exists?</li>
 <li>Does the user <code>%2$s</code> have permission to use the <code>%1$s</code> database?</li>
 <li>On some systems the name of your database is prefixed with your username, so it would be like <code>username_%1$s</code>. Could that be the problem?</li>
 </ul>
-<p>If you don\'t know how to set up a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href="https://wordpress.org/support/">WordPress Support Forums</a>.</p>' ), htmlspecialchars( $db, ENT_QUOTES ), htmlspecialchars( $this->dbuser, ENT_QUOTES ) ), 'db_select_fail' );
-			}
+<p>If you don\'t know how to set up a database you should <strong>contact your host</strong>. If all else fails you may find help at the <a href="http://wordpress.org/support/">WordPress Support Forums</a>.</p>'/*/WP_I18N_DB_SELECT_DB*/, $db, $this->dbuser ), 'db_select_fail' );
 			return;
 		}
 	}
 
 	/**
-	 * Do not use, deprecated.
+	 * Weak escape, using addslashes()
 	 *
-	 * Use esc_sql() or wpdb::prepare() instead.
-	 *
+	 * @see addslashes()
 	 * @since 2.8.0
-	 * @deprecated 3.6.0
-	 * @see wpdb::prepare
-	 * @see esc_sql()
 	 * @access private
 	 *
 	 * @param string $string
 	 * @return string
 	 */
 	function _weak_escape( $string ) {
-		if ( func_num_args() === 1 && function_exists( '_deprecated_function' ) )
-			_deprecated_function( __METHOD__, '3.6', 'wpdb::prepare() or esc_sql()' );
 		return addslashes( $string );
 	}
 
 	/**
-	 * Real escape, using mysqli_real_escape_string() or mysql_real_escape_string()
+	 * Real escape, using mysql_real_escape_string() or addslashes()
 	 *
-	 * @see mysqli_real_escape_string()
 	 * @see mysql_real_escape_string()
+	 * @see addslashes()
 	 * @since 2.8.0
 	 * @access private
 	 *
@@ -1033,22 +783,16 @@ class wpdb {
 	 * @return string escaped
 	 */
 	function _real_escape( $string ) {
-		if ( $this->dbh ) {
-			if ( $this->use_mysqli ) {
-				return mysqli_real_escape_string( $this->dbh, $string );
-			} else {
-				return mysql_real_escape_string( $string, $this->dbh );
-			}
-		}
-
-		$class = get_class( $this );
-		_doing_it_wrong( $class, "$class must set a database connection for use with escaping.", E_USER_NOTICE );
-		return addslashes( $string );
+		if ( $this->dbh && $this->real_escape )
+			return mysql_real_escape_string( $string, $this->dbh );
+		else
+			return addslashes( $string );
 	}
 
 	/**
 	 * Escape data. Works on arrays.
 	 *
+	 * @uses wpdb::_escape()
 	 * @uses wpdb::_real_escape()
 	 * @since  2.8.0
 	 * @access private
@@ -1058,7 +802,7 @@ class wpdb {
 	 */
 	function _escape( $data ) {
 		if ( is_array( $data ) ) {
-			foreach ( $data as $k => $v ) {
+			foreach ( (array) $data as $k => $v ) {
 				if ( is_array($v) )
 					$data[$k] = $this->_escape( $v );
 				else
@@ -1072,30 +816,24 @@ class wpdb {
 	}
 
 	/**
-	 * Do not use, deprecated.
+	 * Escapes content for insertion into the database using addslashes(), for security.
 	 *
-	 * Use esc_sql() or wpdb::prepare() instead.
+	 * Works on arrays.
 	 *
 	 * @since 0.71
-	 * @deprecated 3.6.0
-	 * @see wpdb::prepare()
-	 * @see esc_sql()
-	 *
-	 * @param mixed $data
-	 * @return mixed
+	 * @param string|array $data to escape
+	 * @return string|array escaped as query safe string
 	 */
-	public function escape( $data ) {
-		if ( func_num_args() === 1 && function_exists( '_deprecated_function' ) )
-			_deprecated_function( __METHOD__, '3.6', 'wpdb::prepare() or esc_sql()' );
+	function escape( $data ) {
 		if ( is_array( $data ) ) {
-			foreach ( $data as $k => $v ) {
+			foreach ( (array) $data as $k => $v ) {
 				if ( is_array( $v ) )
-					$data[$k] = $this->escape( $v, 'recursive' );
+					$data[$k] = $this->escape( $v );
 				else
-					$data[$k] = $this->_weak_escape( $v, 'internal' );
+					$data[$k] = $this->_weak_escape( $v );
 			}
 		} else {
-			$data = $this->_weak_escape( $data, 'internal' );
+			$data = $this->_weak_escape( $data );
 		}
 
 		return $data;
@@ -1109,9 +847,8 @@ class wpdb {
 	 * @param string $string to escape
 	 * @return void
 	 */
-	public function escape_by_ref( &$string ) {
-		if ( ! is_float( $string ) )
-			$string = $this->_real_escape( $string );
+	function escape_by_ref( &$string ) {
+		$string = $this->_real_escape( $string );
 	}
 
 	/**
@@ -1151,14 +888,9 @@ class wpdb {
 	 * @return null|false|string Sanitized query string, null if there is no query, false if there is an error and string
 	 * 	if there was something to prepare
 	 */
-	public function prepare( $query, $args ) {
+	function prepare( $query = null ) { // ( $query, *$args )
 		if ( is_null( $query ) )
 			return;
-
-		// This is not meant to be foolproof -- but it will catch obviously incorrect usage.
-		if ( strpos( $query, '%' ) === false ) {
-			_doing_it_wrong( 'wpdb::prepare', sprintf( __( 'The query argument of %s must have a placeholder.' ), 'wpdb::prepare()' ), '3.9' );
-		}
 
 		$args = func_get_args();
 		array_shift( $args );
@@ -1167,36 +899,9 @@ class wpdb {
 			$args = $args[0];
 		$query = str_replace( "'%s'", '%s', $query ); // in case someone mistakenly already singlequoted it
 		$query = str_replace( '"%s"', '%s', $query ); // doublequote unquoting
-		$query = preg_replace( '|(?<!%)%f|' , '%F', $query ); // Force floats to be locale unaware
 		$query = preg_replace( '|(?<!%)%s|', "'%s'", $query ); // quote the strings, avoiding escaped strings like %%s
-		array_walk( $args, array( $this, 'escape_by_ref' ) );
+		array_walk( $args, array( &$this, 'escape_by_ref' ) );
 		return @vsprintf( $query, $args );
-	}
-
-	/**
-	 * First half of escaping for LIKE special characters % and _ before preparing for MySQL.
-	 *
-	 * Use this only before wpdb::prepare() or esc_sql().  Reversing the order is very bad for security.
-	 *
-	 * Example Prepared Statement:
-	 *  $wild = '%';
-	 *  $find = 'only 43% of planets';
-	 *  $like = $wild . $wpdb->esc_like( $find ) . $wild;
-	 *  $sql  = $wpdb->prepare( "SELECT * FROM $wpdb->posts WHERE post_content LIKE %s", $like );
-	 *
-	 * Example Escape Chain:
-	 *  $sql  = esc_sql( $wpdb->esc_like( $input ) );
-	 *
-	 * @since 4.0.0
-	 * @access public
-	 *
-	 * @param string $text The raw text to be escaped. The input typed by the user should have no
-	 *                     extra or deleted slashes.
-	 * @return string Text in the form of a LIKE phrase. The output is not SQL safe. Call $wpdb::prepare()
-	 *                or real_escape next.
-	 */
-	public function esc_like( $text ) {
-		return addcslashes( $text, '_%\\' );
 	}
 
 	/**
@@ -1208,29 +913,26 @@ class wpdb {
 	 * @param string $str The error to display
 	 * @return bool False if the showing of errors is disabled.
 	 */
-	public function print_error( $str = '' ) {
+	function print_error( $str = '' ) {
 		global $EZSQL_ERROR;
 
-		if ( !$str ) {
-			if ( $this->use_mysqli ) {
-				$str = mysqli_error( $this->dbh );
-			} else {
-				$str = mysql_error( $this->dbh );
-			}
-		}
+		if ( !$str )
+			$str = mysql_error( $this->dbh );
 		$EZSQL_ERROR[] = array( 'query' => $this->last_query, 'error_str' => $str );
 
 		if ( $this->suppress_errors )
 			return false;
 
-		wp_load_translations_early();
-
 		if ( $caller = $this->get_caller() )
-			$error_str = sprintf( __( 'WordPress database error %1$s for query %2$s made by %3$s' ), $str, $this->last_query, $caller );
+			$error_str = sprintf( /*WP_I18N_DB_QUERY_ERROR_FULL*/'WordPress database error %1$s for query %2$s made by %3$s'/*/WP_I18N_DB_QUERY_ERROR_FULL*/, $str, $this->last_query, $caller );
 		else
-			$error_str = sprintf( __( 'WordPress database error %1$s for query %2$s' ), $str, $this->last_query );
+			$error_str = sprintf( /*WP_I18N_DB_QUERY_ERROR*/'WordPress database error %1$s for query %2$s'/*/WP_I18N_DB_QUERY_ERROR*/, $str, $this->last_query );
 
-		error_log( $error_str );
+		if ( function_exists( 'error_log' )
+			&& ( $log_file = @ini_get( 'error_log' ) )
+			&& ( 'syslog' == $log_file || @is_writable( $log_file ) )
+			)
+			@error_log( $error_str );
 
 		// Are we showing errors?
 		if ( ! $this->show_errors )
@@ -1268,7 +970,7 @@ class wpdb {
 	 * @param bool $show Whether to show or hide errors
 	 * @return bool Old value for showing errors.
 	 */
-	public function show_errors( $show = true ) {
+	function show_errors( $show = true ) {
 		$errors = $this->show_errors;
 		$this->show_errors = $show;
 		return $errors;
@@ -1284,7 +986,7 @@ class wpdb {
 	 *
 	 * @return bool Whether showing of errors was active
 	 */
-	public function hide_errors() {
+	function hide_errors() {
 		$show = $this->show_errors;
 		$this->show_errors = false;
 		return $show;
@@ -1301,7 +1003,7 @@ class wpdb {
 	 * @param bool $suppress Optional. New value. Defaults to true.
 	 * @return bool Old value
 	 */
-	public function suppress_errors( $suppress = true ) {
+	function suppress_errors( $suppress = true ) {
 		$errors = $this->suppress_errors;
 		$this->suppress_errors = (bool) $suppress;
 		return $errors;
@@ -1313,115 +1015,29 @@ class wpdb {
 	 * @since 0.71
 	 * @return void
 	 */
-	public function flush() {
+	function flush() {
 		$this->last_result = array();
 		$this->col_info    = null;
 		$this->last_query  = null;
-		$this->rows_affected = $this->num_rows = 0;
-		$this->last_error  = '';
-
-		if ( is_resource( $this->result ) ) {
-			if ( $this->use_mysqli ) {
-				mysqli_free_result( $this->result );
-			} else {
-				mysql_free_result( $this->result );
-			}
-		}
 	}
 
 	/**
-	 * Connect to and select database.
-	 *
-	 * If $allow_bail is false, the lack of database connection will need
-	 * to be handled manually.
+	 * Connect to and select database
 	 *
 	 * @since 3.0.0
-	 * @since 3.9.0 $allow_bail parameter added.
-	 *
-	 * @param bool $allow_bail Optional. Allows the function to bail. Default true.
-	 * @return bool True with a successful connection, false on failure.
 	 */
-	public function db_connect( $allow_bail = true ) {
+	function db_connect() {
 
 		$this->is_mysql = true;
 
-		/*
-		 * Deprecated in 3.9+ when using MySQLi. No equivalent
-		 * $new_link parameter exists for mysqli_* functions.
-		 */
-		$new_link = defined( 'MYSQL_NEW_LINK' ) ? MYSQL_NEW_LINK : true;
-		$client_flags = defined( 'MYSQL_CLIENT_FLAGS' ) ? MYSQL_CLIENT_FLAGS : 0;
-
-		if ( $this->use_mysqli ) {
-			$this->dbh = mysqli_init();
-
-			// mysqli_real_connect doesn't support the host param including a port or socket
-			// like mysql_connect does. This duplicates how mysql_connect detects a port and/or socket file.
-			$port = null;
-			$socket = null;
-			$host = $this->dbhost;
-			$port_or_socket = strstr( $host, ':' );
-			if ( ! empty( $port_or_socket ) ) {
-				$host = substr( $host, 0, strpos( $host, ':' ) );
-				$port_or_socket = substr( $port_or_socket, 1 );
-				if ( 0 !== strpos( $port_or_socket, '/' ) ) {
-					$port = intval( $port_or_socket );
-					$maybe_socket = strstr( $port_or_socket, ':' );
-					if ( ! empty( $maybe_socket ) ) {
-						$socket = substr( $maybe_socket, 1 );
-					}
-				} else {
-					$socket = $port_or_socket;
-				}
-			}
-
-			if ( WP_DEBUG ) {
-				mysqli_real_connect( $this->dbh, $host, $this->dbuser, $this->dbpassword, null, $port, $socket, $client_flags );
-			} else {
-				@mysqli_real_connect( $this->dbh, $host, $this->dbuser, $this->dbpassword, null, $port, $socket, $client_flags );
-			}
-
-			if ( $this->dbh->connect_errno ) {
-				$this->dbh = null;
-
-				/* It's possible ext/mysqli is misconfigured. Fall back to ext/mysql if:
-		 		 *  - We haven't previously connected, and
-		 		 *  - WP_USE_EXT_MYSQL isn't set to false, and
-		 		 *  - ext/mysql is loaded.
-		 		 */
-				$attempt_fallback = true;
-
-				if ( $this->has_connected ) {
-					$attempt_fallback = false;
-				} else if ( defined( 'WP_USE_EXT_MYSQL' ) && ! WP_USE_EXT_MYSQL ) {
-					$attempt_fallback = false;
-				} else if ( ! function_exists( 'mysql_connect' ) ) {
-					$attempt_fallback = false;
-				}
-
-				if ( $attempt_fallback ) {
-					$this->use_mysqli = false;
-					$this->db_connect();
-				}
-			}
+		if ( WP_DEBUG ) {
+			$this->dbh = mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword, true );
 		} else {
-			if ( WP_DEBUG ) {
-				$this->dbh = mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword, $new_link, $client_flags );
-			} else {
-				$this->dbh = @mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword, $new_link, $client_flags );
-			}
+			$this->dbh = @mysql_connect( $this->dbhost, $this->dbuser, $this->dbpassword, true );
 		}
 
-		if ( ! $this->dbh && $allow_bail ) {
-			wp_load_translations_early();
-
-			// Load custom DB error template, if present.
-			if ( file_exists( WP_CONTENT_DIR . '/db-error.php' ) ) {
-				require_once( WP_CONTENT_DIR . '/db-error.php' );
-				die();
-			}
-
-			$this->bail( sprintf( __( "
+		if ( !$this->dbh ) {
+			$this->bail( sprintf( /*WP_I18N_DB_CONN_ERROR*/"
 <h1>Error establishing a database connection</h1>
 <p>This either means that the username and password information in your <code>wp-config.php</code> file is incorrect or we can't contact the database server at <code>%s</code>. This could mean your host's database server is down.</p>
 <ul>
@@ -1429,97 +1045,17 @@ class wpdb {
 	<li>Are you sure that you have typed the correct hostname?</li>
 	<li>Are you sure that the database server is running?</li>
 </ul>
-<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='https://wordpress.org/support/'>WordPress Support Forums</a>.</p>
-" ), htmlspecialchars( $this->dbhost, ENT_QUOTES ) ), 'db_connect_fail' );
+<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='http://wordpress.org/support/'>WordPress Support Forums</a>.</p>
+"/*/WP_I18N_DB_CONN_ERROR*/, $this->dbhost ), 'db_connect_fail' );
 
-			return false;
-		} else if ( $this->dbh ) {
-			$this->has_connected = true;
-			$this->set_charset( $this->dbh );
-			$this->set_sql_mode();
-			$this->ready = true;
-			$this->select( $this->dbname, $this->dbh );
-
-			return true;
+			return;
 		}
 
-		return false;
-	}
+		$this->set_charset( $this->dbh );
 
-	/**
-	 * Check that the connection to the database is still up. If not, try to reconnect.
-	 *
-	 * If this function is unable to reconnect, it will forcibly die, or if after the
-	 * the template_redirect hook has been fired, return false instead.
-	 *
-	 * If $allow_bail is false, the lack of database connection will need
-	 * to be handled manually.
-	 *
-	 * @since 3.9.0
-	 *
-	 * @param bool $allow_bail Optional. Allows the function to bail. Default true.
-	 * @return bool True if the connection is up.
-	 */
-	public function check_connection( $allow_bail = true ) {
-		if ( $this->use_mysqli ) {
-			if ( @mysqli_ping( $this->dbh ) ) {
-				return true;
-			}
-		} else {
-			if ( @mysql_ping( $this->dbh ) ) {
-				return true;
-			}
-		}
+		$this->ready = true;
 
-		$error_reporting = false;
-
-		// Disable warnings, as we don't want to see a multitude of "unable to connect" messages
-		if ( WP_DEBUG ) {
-			$error_reporting = error_reporting();
-			error_reporting( $error_reporting & ~E_WARNING );
-		}
-
-		for ( $tries = 1; $tries <= $this->reconnect_retries; $tries++ ) {
-			// On the last try, re-enable warnings. We want to see a single instance of the
-			// "unable to connect" message on the bail() screen, if it appears.
-			if ( $this->reconnect_retries === $tries && WP_DEBUG ) {
-				error_reporting( $error_reporting );
-			}
-
-			if ( $this->db_connect( false ) ) {
-				if ( $error_reporting ) {
-					error_reporting( $error_reporting );
-				}
-
-				return true;
-			}
-
-			sleep( 1 );
-		}
-
-		// If template_redirect has already happened, it's too late for wp_die()/dead_db().
-		// Let's just return and hope for the best.
-		if ( did_action( 'template_redirect' ) ) {
-			return false;
-		}
-
-		if ( ! $allow_bail ) {
-			return false;
-		}
-
-		// We weren't able to reconnect, so we better bail.
-		$this->bail( sprintf( ( "
-<h1>Error reconnecting to the database</h1>
-<p>This means that we lost contact with the database server at <code>%s</code>. This could mean your host's database server is down.</p>
-<ul>
-	<li>Are you sure that the database server is running?</li>
-	<li>Are you sure that the database server is not under particularly heavy load?</li>
-</ul>
-<p>If you're unsure what these terms mean you should probably contact your host. If you still need help you can always visit the <a href='https://wordpress.org/support/'>WordPress Support Forums</a>.</p>
-" ), htmlspecialchars( $this->dbhost, ENT_QUOTES ) ), 'db_connect_fail' );
-
-		// Call dead_db() if bail didn't die, because this database is no more. It has ceased to be (at least temporarily).
-		dead_db();
+		$this->select( $this->dbname, $this->dbh );
 	}
 
 	/**
@@ -1532,22 +1068,15 @@ class wpdb {
 	 * @param string $query Database query
 	 * @return int|false Number of rows affected/selected or false on error
 	 */
-	public function query( $query ) {
+	function query( $query ) {
 		if ( ! $this->ready )
 			return false;
 
-		/**
-		 * Filter the database query.
-		 *
-		 * Some queries are made before the plugins have been loaded,
-		 * and thus cannot be filtered with this method.
-		 *
-		 * @since 2.1.0
-		 *
-		 * @param string $query Database query.
-		 */
-		$query = apply_filters( 'query', $query );
+		// some queries are made before the plugins have been loaded, and thus cannot be filtered with this method
+		if ( function_exists( 'apply_filters' ) )
+			$query = apply_filters( 'query', $query );
 
+		$return_val = 0;
 		$this->flush();
 
 		// Log how the function was called
@@ -1556,74 +1085,44 @@ class wpdb {
 		// Keep track of the last query for debug..
 		$this->last_query = $query;
 
-		$this->_do_query( $query );
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
+			$this->timer_start();
 
-		// MySQL server has gone away, try to reconnect
-		$mysql_errno = 0;
-		if ( ! empty( $this->dbh ) ) {
-			if ( $this->use_mysqli ) {
-				$mysql_errno = mysqli_errno( $this->dbh );
-			} else {
-				$mysql_errno = mysql_errno( $this->dbh );
-			}
-		}
+		$this->result = @mysql_query( $query, $this->dbh );
+		$this->num_queries++;
 
-		if ( empty( $this->dbh ) || 2006 == $mysql_errno ) {
-			if ( $this->check_connection() ) {
-				$this->_do_query( $query );
-			} else {
-				$this->insert_id = 0;
-				return false;
-			}
-		}
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES )
+			$this->queries[] = array( $query, $this->timer_stop(), $this->get_caller() );
 
 		// If there is an error then take note of it..
-		if ( $this->use_mysqli ) {
-			$this->last_error = mysqli_error( $this->dbh );
-		} else {
-			$this->last_error = mysql_error( $this->dbh );
-		}
-
-		if ( $this->last_error ) {
-			// Clear insert_id on a subsequent failed insert.
-			if ( $this->insert_id && preg_match( '/^\s*(insert|replace)\s/i', $query ) )
-				$this->insert_id = 0;
-
+		if ( $this->last_error = mysql_error( $this->dbh ) ) {
 			$this->print_error();
 			return false;
 		}
 
-		if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query ) ) {
+		if ( preg_match( '/^\s*(create|alter|truncate|drop) /i', $query ) ) {
 			$return_val = $this->result;
-		} elseif ( preg_match( '/^\s*(insert|delete|update|replace)\s/i', $query ) ) {
-			if ( $this->use_mysqli ) {
-				$this->rows_affected = mysqli_affected_rows( $this->dbh );
-			} else {
-				$this->rows_affected = mysql_affected_rows( $this->dbh );
-			}
+		} elseif ( preg_match( '/^\s*(insert|delete|update|replace) /i', $query ) ) {
+			$this->rows_affected = mysql_affected_rows( $this->dbh );
 			// Take note of the insert_id
-			if ( preg_match( '/^\s*(insert|replace)\s/i', $query ) ) {
-				if ( $this->use_mysqli ) {
-					$this->insert_id = mysqli_insert_id( $this->dbh );
-				} else {
-					$this->insert_id = mysql_insert_id( $this->dbh );
-				}
+			if ( preg_match( '/^\s*(insert|replace) /i', $query ) ) {
+				$this->insert_id = mysql_insert_id($this->dbh);
 			}
 			// Return number of rows affected
 			$return_val = $this->rows_affected;
 		} else {
-			$num_rows = 0;
-			if ( $this->use_mysqli ) {
-				while ( $row = @mysqli_fetch_object( $this->result ) ) {
-					$this->last_result[$num_rows] = $row;
-					$num_rows++;
-				}
-			} else {
-				while ( $row = @mysql_fetch_object( $this->result ) ) {
-					$this->last_result[$num_rows] = $row;
-					$num_rows++;
-				}
+			$i = 0;
+			while ( $i < @mysql_num_fields( $this->result ) ) {
+				$this->col_info[$i] = @mysql_fetch_field( $this->result );
+				$i++;
 			}
+			$num_rows = 0;
+			while ( $row = @mysql_fetch_object( $this->result ) ) {
+				$this->last_result[$num_rows] = $row;
+				$num_rows++;
+			}
+
+			@mysql_free_result( $this->result );
 
 			// Log number of rows the query returned
 			// and return number of rows selected
@@ -1632,33 +1131,6 @@ class wpdb {
 		}
 
 		return $return_val;
-	}
-
-	/**
-	 * Internal function to perform the mysql_query() call.
-	 *
-	 * @since 3.9.0
-	 *
-	 * @access private
-	 * @see wpdb::query()
-	 *
-	 * @param string $query The query to run.
-	 */
-	private function _do_query( $query ) {
-		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
-			$this->timer_start();
-		}
-
-		if ( $this->use_mysqli ) {
-			$this->result = @mysqli_query( $this->dbh, $query );
-		} else {
-			$this->result = @mysql_query( $query, $this->dbh );
-		}
-		$this->num_queries++;
-
-		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
-			$this->queries[] = array( $query, $this->timer_stop(), $this->get_caller() );
-		}
 	}
 
 	/**
@@ -1680,7 +1152,7 @@ class wpdb {
 	 * 	A format is one of '%d', '%f', '%s' (integer, float, string). If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
 	 * @return int|false The number of rows inserted, or false on error.
 	 */
-	public function insert( $table, $data, $format = null ) {
+	function insert( $table, $data, $format = null ) {
 		return $this->_insert_replace_helper( $table, $data, $format, 'INSERT' );
 	}
 
@@ -1703,7 +1175,7 @@ class wpdb {
 	 * 	A format is one of '%d', '%f', '%s' (integer, float, string). If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
 	 * @return int|false The number of rows affected, or false on error.
 	 */
-	public function replace( $table, $data, $format = null ) {
+	function replace( $table, $data, $format = null ) {
 		return $this->_insert_replace_helper( $table, $data, $format, 'REPLACE' );
 	}
 
@@ -1719,7 +1191,7 @@ class wpdb {
 	 * @see wp_set_wpdb_vars()
 	 *
 	 * @param string $table table name
-	 * @param array $data Data to insert (in column => value pairs). Both $data columns and $data values should be "raw" (neither should be SQL escaped).
+	 * @param array $data Data to insert (in column => value pairs).  Both $data columns and $data values should be "raw" (neither should be SQL escaped).
 	 * @param array|string $format Optional. An array of formats to be mapped to each of the value in $data. If string, that format will be used for all of the values in $data.
 	 * 	A format is one of '%d', '%f', '%s' (integer, float, string). If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
 	 * @param string $type Optional. What type of operation is this? INSERT or REPLACE. Defaults to INSERT.
@@ -1728,7 +1200,6 @@ class wpdb {
 	function _insert_replace_helper( $table, $data, $format = null, $type = 'INSERT' ) {
 		if ( ! in_array( strtoupper( $type ), array( 'REPLACE', 'INSERT' ) ) )
 			return false;
-		$this->insert_id = 0;
 		$formats = $format = (array) $format;
 		$fields = array_keys( $data );
 		$formatted_fields = array();
@@ -1741,7 +1212,7 @@ class wpdb {
 				$form = '%s';
 			$formatted_fields[] = $form;
 		}
-		$sql = "{$type} INTO `$table` (`" . implode( '`,`', $fields ) . "`) VALUES (" . implode( ",", $formatted_fields ) . ")";
+		$sql = "{$type} INTO `$table` (`" . implode( '`,`', $fields ) . "`) VALUES ('" . implode( "','", $formatted_fields ) . "')";
 		return $this->query( $this->prepare( $sql, $data ) );
 	}
 
@@ -1763,10 +1234,10 @@ class wpdb {
 	 * @param array $where A named array of WHERE clauses (in column => value pairs). Multiple clauses will be joined with ANDs. Both $where columns and $where values should be "raw".
 	 * @param array|string $format Optional. An array of formats to be mapped to each of the values in $data. If string, that format will be used for all of the values in $data.
 	 * 	A format is one of '%d', '%f', '%s' (integer, float, string). If omitted, all values in $data will be treated as strings unless otherwise specified in wpdb::$field_types.
-	 * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where. If string, that format will be used for all of the items in $where. A format is one of '%d', '%f', '%s' (integer, float, string). If omitted, all values in $where will be treated as strings.
+	 * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where. If string, that format will be used for all of the items in $where.  A format is one of '%d', '%f', '%s' (integer, float, string).  If omitted, all values in $where will be treated as strings.
 	 * @return int|false The number of rows updated, or false on error.
 	 */
-	public function update( $table, $data, $where, $format = null, $where_format = null ) {
+	function update( $table, $data, $where, $format = null, $where_format = null ) {
 		if ( ! is_array( $data ) || ! is_array( $where ) )
 			return false;
 
@@ -1798,49 +1269,6 @@ class wpdb {
 	}
 
 	/**
-	 * Delete a row in the table
-	 *
-	 * <code>
-	 * wpdb::delete( 'table', array( 'ID' => 1 ) )
-	 * wpdb::delete( 'table', array( 'ID' => 1 ), array( '%d' ) )
-	 * </code>
-	 *
-	 * @since 3.4.0
-	 * @see wpdb::prepare()
-	 * @see wpdb::$field_types
-	 * @see wp_set_wpdb_vars()
-	 *
-	 * @param string $table table name
-	 * @param array $where A named array of WHERE clauses (in column => value pairs). Multiple clauses will be joined with ANDs. Both $where columns and $where values should be "raw".
-	 * @param array|string $where_format Optional. An array of formats to be mapped to each of the values in $where. If string, that format will be used for all of the items in $where. A format is one of '%d', '%f', '%s' (integer, float, string). If omitted, all values in $where will be treated as strings unless otherwise specified in wpdb::$field_types.
-	 * @return int|false The number of rows updated, or false on error.
-	 */
-	public function delete( $table, $where, $where_format = null ) {
-		if ( ! is_array( $where ) )
-			return false;
-
-		$wheres = array();
-
-		$where_formats = $where_format = (array) $where_format;
-
-		foreach ( array_keys( $where ) as $field ) {
-			if ( !empty( $where_format ) ) {
-				$form = ( $form = array_shift( $where_formats ) ) ? $form : $where_format[0];
-			} elseif ( isset( $this->field_types[ $field ] ) ) {
-				$form = $this->field_types[ $field ];
-			} else {
-				$form = '%s';
-			}
-
-			$wheres[] = "$field = $form";
-		}
-
-		$sql = "DELETE FROM $table WHERE " . implode( ' AND ', $wheres );
-		return $this->query( $this->prepare( $sql, $where ) );
-	}
-
-
-	/**
 	 * Retrieve one variable from the database.
 	 *
 	 * Executes a SQL query and returns the value from the SQL result.
@@ -1850,11 +1278,11 @@ class wpdb {
 	 * @since 0.71
 	 *
 	 * @param string|null $query Optional. SQL query. Defaults to null, use the result from the previous query.
-	 * @param int $x Optional. Column of value to return. Indexed from 0.
-	 * @param int $y Optional. Row of value to return. Indexed from 0.
+	 * @param int $x Optional. Column of value to return.  Indexed from 0.
+	 * @param int $y Optional. Row of value to return.  Indexed from 0.
 	 * @return string|null Database query result (as string), or null on failure
 	 */
-	public function get_var( $query = null, $x = 0, $y = 0 ) {
+	function get_var( $query = null, $x = 0, $y = 0 ) {
 		$this->func_call = "\$db->get_var(\"$query\", $x, $y)";
 		if ( $query )
 			$this->query( $query );
@@ -1881,7 +1309,7 @@ class wpdb {
 	 * @param int $y Optional. Row to return. Indexed from 0.
 	 * @return mixed Database query result in format specified by $output or null on failure
 	 */
-	public function get_row( $query = null, $output = OBJECT, $y = 0 ) {
+	function get_row( $query = null, $output = OBJECT, $y = 0 ) {
 		$this->func_call = "\$db->get_row(\"$query\",$output,$y)";
 		if ( $query )
 			$this->query( $query );
@@ -1897,11 +1325,8 @@ class wpdb {
 			return $this->last_result[$y] ? get_object_vars( $this->last_result[$y] ) : null;
 		} elseif ( $output == ARRAY_N ) {
 			return $this->last_result[$y] ? array_values( get_object_vars( $this->last_result[$y] ) ) : null;
-		} elseif ( strtoupper( $output ) === OBJECT ) {
-			// Back compat for OBJECT being previously case insensitive.
-			return $this->last_result[$y] ? $this->last_result[$y] : null;
 		} else {
-			$this->print_error( " \$db->get_row(string query, output type, int offset) -- Output type must be one of: OBJECT, ARRAY_A, ARRAY_N" );
+			$this->print_error(/*WP_I18N_DB_GETROW_ERROR*/" \$db->get_row(string query, output type, int offset) -- Output type must be one of: OBJECT, ARRAY_A, ARRAY_N"/*/WP_I18N_DB_GETROW_ERROR*/);
 		}
 	}
 
@@ -1918,7 +1343,7 @@ class wpdb {
 	 * @param int $x Optional. Column to return. Indexed from 0.
 	 * @return array Database query result. Array indexed from 0 by SQL result row number.
 	 */
-	public function get_col( $query = null , $x = 0 ) {
+	function get_col( $query = null , $x = 0 ) {
 		if ( $query )
 			$this->query( $query );
 
@@ -1940,10 +1365,10 @@ class wpdb {
 	 * @param string $query SQL query.
 	 * @param string $output Optional. Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants. With one of the first three, return an array of rows indexed from 0 by SQL result row number.
 	 * 	Each row is an associative array (column => value, ...), a numerically indexed array (0 => value, ...), or an object. ( ->column = value ), respectively.
-	 * 	With OBJECT_K, return an associative array of row objects keyed by the value of each row's first column's value. Duplicate keys are discarded.
+	 * 	With OBJECT_K, return an associative array of row objects keyed by the value of each row's first column's value.  Duplicate keys are discarded.
 	 * @return mixed Database query results
 	 */
-	public function get_results( $query = null, $output = OBJECT ) {
+	function get_results( $query = null, $output = OBJECT ) {
 		$this->func_call = "\$db->get_results(\"$query\", $output)";
 
 		if ( $query )
@@ -1979,33 +1404,8 @@ class wpdb {
 				}
 			}
 			return $new_array;
-		} elseif ( strtoupper( $output ) === OBJECT ) {
-			// Back compat for OBJECT being previously case insensitive.
-			return $this->last_result;
 		}
 		return null;
-	}
-
-	/**
-	 * Load the column metadata from the last query.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @access protected
-	 */
-	protected function load_col_info() {
-		if ( $this->col_info )
-			return;
-
-		if ( $this->use_mysqli ) {
-			for ( $i = 0; $i < @mysqli_num_fields( $this->result ); $i++ ) {
-				$this->col_info[ $i ] = @mysqli_fetch_field( $this->result );
-			}
-		} else {
-			for ( $i = 0; $i < @mysql_num_fields( $this->result ); $i++ ) {
-				$this->col_info[ $i ] = @mysql_fetch_field( $this->result, $i );
-			}
-		}
 	}
 
 	/**
@@ -2017,9 +1417,7 @@ class wpdb {
 	 * @param int $col_offset Optional. 0: col name. 1: which table the col's in. 2: col's max length. 3: if the col is numeric. 4: col's type
 	 * @return mixed Column Results
 	 */
-	public function get_col_info( $info_type = 'name', $col_offset = -1 ) {
-		$this->load_col_info();
-
+	function get_col_info( $info_type = 'name', $col_offset = -1 ) {
 		if ( $this->col_info ) {
 			if ( $col_offset == -1 ) {
 				$i = 0;
@@ -2042,8 +1440,9 @@ class wpdb {
 	 *
 	 * @return true
 	 */
-	public function timer_start() {
-		$this->time_start = microtime( true );
+	function timer_start() {
+		$mtime            = explode( ' ', microtime() );
+		$this->time_start = $mtime[1] + $mtime[0];
 		return true;
 	}
 
@@ -2052,16 +1451,19 @@ class wpdb {
 	 *
 	 * @since 1.5.0
 	 *
-	 * @return float Total time spent on the query, in seconds
+	 * @return int Total time spent on the query, in milliseconds
 	 */
-	public function timer_stop() {
-		return ( microtime( true ) - $this->time_start );
+	function timer_stop() {
+		$mtime      = explode( ' ', microtime() );
+		$time_end   = $mtime[1] + $mtime[0];
+		$time_total = $time_end - $this->time_start;
+		return $time_total;
 	}
 
 	/**
 	 * Wraps errors in a nice header and footer and dies.
 	 *
-	 * Will not die if wpdb::$show_errors is false.
+	 * Will not die if wpdb::$show_errors is true
 	 *
 	 * @since 1.5.0
 	 *
@@ -2069,7 +1471,7 @@ class wpdb {
 	 * @param string $error_code Optional. A Computer readable string to identify the error.
 	 * @return false|void
 	 */
-	public function bail( $message, $error_code = '500' ) {
+	function bail( $message, $error_code = '500' ) {
 		if ( !$this->show_errors ) {
 			if ( class_exists( 'WP_Error' ) )
 				$this->error = new WP_Error($error_code, $message);
@@ -2089,7 +1491,7 @@ class wpdb {
 	 *
 	 * @return WP_Error
 	 */
-	public function check_database_version() {
+	function check_database_version() {
 		global $wp_version, $required_mysql_version;
 		// Make sure the server has the required MySQL version
 		if ( version_compare($this->db_version(), $required_mysql_version, '<') )
@@ -2102,53 +1504,32 @@ class wpdb {
 	 * Called when WordPress is generating the table scheme.
 	 *
 	 * @since 2.5.0
-	 * @deprecated 3.5.0
-	 * @deprecated Use wpdb::has_cap( 'collation' )
 	 *
 	 * @return bool True if collation is supported, false if version does not
 	 */
-	public function supports_collation() {
-		_deprecated_function( __FUNCTION__, '3.5', 'wpdb::has_cap( \'collation\' )' );
+	function supports_collation() {
 		return $this->has_cap( 'collation' );
 	}
 
 	/**
-	 * The database character collate.
-	 *
-	 * @since 3.5.0
-	 *
-	 * @return string The database character collate.
-	 */
-	public function get_charset_collate() {
-		$charset_collate = '';
-
-		if ( ! empty( $this->charset ) )
-			$charset_collate = "DEFAULT CHARACTER SET $this->charset";
-		if ( ! empty( $this->collate ) )
-			$charset_collate .= " COLLATE $this->collate";
-
-		return $charset_collate;
-	}
-
-	/**
-	 * Determine if a database supports a particular feature.
+	 * Determine if a database supports a particular feature
 	 *
 	 * @since 2.7.0
-	 * @see wpdb::db_version()
+	 * @see   wpdb::db_version()
 	 *
-	 * @param string $db_cap The feature to check for.
+	 * @param string $db_cap the feature
 	 * @return bool
 	 */
-	public function has_cap( $db_cap ) {
+	function has_cap( $db_cap ) {
 		$version = $this->db_version();
 
 		switch ( strtolower( $db_cap ) ) {
 			case 'collation' :    // @since 2.5.0
-			case 'group_concat' : // @since 2.7.0
-			case 'subqueries' :   // @since 2.7.0
+			case 'group_concat' : // @since 2.7
+			case 'subqueries' :   // @since 2.7
 				return version_compare( $version, '4.1', '>=' );
 			case 'set_charset' :
-				return version_compare( $version, '5.0.7', '>=' );
+				return version_compare($version, '5.0.7', '>=');
 		};
 
 		return false;
@@ -2164,8 +1545,17 @@ class wpdb {
 	 *
 	 * @return string The name of the calling function
 	 */
-	public function get_caller() {
-		return wp_debug_backtrace_summary( __CLASS__ );
+	function get_caller() {
+		$trace  = array_reverse( debug_backtrace() );
+		$caller = array();
+
+		foreach ( $trace as $call ) {
+			if ( isset( $call['class'] ) && __CLASS__ == $call['class'] )
+				continue; // Filter out wpdb calls.
+			$caller[] = isset( $call['class'] ) ? "{$call['class']}->{$call['function']}" : $call['function'];
+		}
+
+		return join( ', ', $caller );
 	}
 
 	/**
@@ -2175,12 +1565,9 @@ class wpdb {
 	 *
 	 * @return false|string false on failure, version number on success
 	 */
-	public function db_version() {
-		if ( $this->use_mysqli ) {
-			$server_info = mysqli_get_server_info( $this->dbh );
-		} else {
-			$server_info = mysql_get_server_info( $this->dbh );
-		}
-		return preg_replace( '/[^0-9.].*/', '', $server_info );
+	function db_version() {
+		return preg_replace( '/[^0-9.].*/', '', mysql_get_server_info( $this->dbh ) );
 	}
 }
+
+?>

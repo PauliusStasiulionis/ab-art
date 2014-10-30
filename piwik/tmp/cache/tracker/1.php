@@ -9,15 +9,10 @@ $content   = array (
   ),
   'hosts' => 
   array (
-    0 => 'www.ab-art.lt',
+    0 => 'dev.ab-art.lt',
   ),
   'excluded_ips' => 
   array (
-    0 => 
-    array (
-      0 => '82.228.251.187',
-      1 => '82.228.251.187',
-    ),
   ),
   'excluded_parameters' => 
   array (

@@ -7,19 +7,27 @@
  */
 
 /** WordPress Administration Bootstrap */
-require_once( './admin.php' );
+require_once( dirname( __FILE__ ) . '/admin.php' );
+
+wp_enqueue_style( 'wp-mediaelement' );
+wp_enqueue_script( 'wp-mediaelement' );
+wp_localize_script( 'mediaelement', '_wpmejsSettings', array(
+	'pluginPath' => includes_url( 'js/mediaelement/', 'relative' ),
+	'pauseOtherPlayers' => ''
+) );
 
 $title = __( 'About' );
 
 list( $display_version ) = explode( '-', $wp_version );
 
-include( './admin-header.php' );
+include( ABSPATH . 'wp-admin/admin-header.php' );
 ?>
+<!--[if lt IE 9]><script>document.createElement('audio');document.createElement('video');</script><![endif]-->
 <div class="wrap about-wrap">
 
-<h1><?php printf( __( 'Welcome to WordPress %s' ), $display_version ); ?></h1>
+<h1><?php printf( __( 'Welcome to WordPress&nbsp;%s' ), $display_version ); ?></h1>
 
-<div class="about-text"><?php printf( __( 'Thank you for updating to the latest version! Using WordPress %s will improve your looks, personality, and web publishing experience. Okay, just the last one, but still. :)' ), $display_version ); ?></div>
+<div class="about-text"><?php printf( __( 'Thank you for updating! WordPress %s brings you a smoother writing and management experience.' ), $display_version ); ?></div>
 
 <div class="wp-badge"><?php printf( __( 'Version %s' ), $display_version ); ?></div>
 
@@ -33,153 +41,131 @@ include( './admin-header.php' );
 	</a>
 </h2>
 
-<div class="changelog point-releases">
-	<h3><?php echo _n( 'Maintenance and Security Release', 'Maintenance and Security Releases', 1 ); ?></h3>
-	<p><?php printf( _n( '<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bug.',
-         '<strong>Version %1$s</strong> addressed a security issue and fixed %2$s bugs.', 15 ), '3.3.1', number_format_i18n( 15 ) ); ?>
-		<?php printf( __( 'For more information, see <a href="%s">the release notes</a>.' ), 'http://codex.wordpress.org/Version_3.3.1' ); ?>
- 	</p>
-</div>
-
 <div class="changelog">
-	<h3><?php _e( 'Easier Uploading' ); ?></h3>
+	<div class="about-overview">
+		<?php if ( ( $locale = get_locale() ) && 'en_' === substr( $locale, 0, 3 ) ) : ?>
+			<embed src="//v.wordpress.com/bUdzKMro" type="application/x-shockwave-flash" width="640" height="360" allowscriptaccess="always" allowfullscreen="true" wmode="transparent"></embed>
+		<?php else : ?>
+			<img class="about-overview-img" src="//s.w.org/images/core/4.0/wp40.png" width="640" height="360" />
+		<?php endif; ?>
+	</div>
 
-	<div class="feature-section images-stagger-right">
-		<div class="feature-images">
-			<img src="images/screenshots/media-icon.png" width="200" class="angled-right" />
-			<img src="images/screenshots/drag-and-drop.png" width="200" class="angled-left" />
+	<hr />
+
+	<div class="feature-section col two-col">
+		<div class="col-1">
+			<h3><?php _e( 'Manage your media with style' ); ?></h3>
+			<p><?php _e( 'Explore your uploads in a beautiful, endless grid. A new details preview makes viewing and editing any amount of media in sequence a snap.' ); ?></p>
 		</div>
-		<div class="left-feature">
-			<h4><?php _e( 'File Type Detection' ); ?></h4>
-			<p><?php _e( 'We&#8217;ve streamlined things! Instead of needing to click on a specific upload icon based on your file type, now there&#8217;s just one. Once your file is uploaded, the appropriate fields will be displayed for entering information based on the file type.' ); ?></p>
+		<div class="col-2 last-feature">
+			<img src="//s.w.org/images/core/4.0/media.jpg" />
+		</div>
+	</div>
 
-			<h4><?php _e( 'Drag-and-Drop Media Uploader' ); ?></h4>
-			<p><?php _e( 'Adding photos or other files to posts and pages just got easier. Drag files from your desktop and drop them into the uploader. Add one file at a time, or many at once.' ); ?></p>
+	<hr />
 
-			<h4><?php _e( 'More File Formats' ); ?></h4>
-			<p><?php _e( 'We&#8217;ve added the rar and 7z file formats to the list of allowed file types in the uploader.' ); ?></p>
+	<div class="feature-section col two-col">
+		<div class="col-1">
+			<div class="about-video about-video-embed">
+				<?php
+					echo wp_video_shortcode( array(
+						'mp4'      => '//s.w.org/images/core/4.0/embed.mp4',
+						'ogv'      => '//s.w.org/images/core/4.0/embed.ogv',
+						'webm'      => '//s.w.org/images/core/4.0/embed.webm',
+						'loop'     => true,
+						'autoplay' => true,
+						'width'    => 500,
+						'height'   => 352
+					) );
+				?>
+			</div>
+		</div>
+		<div class="col-2 last-feature">
+			<h3><?php _e( 'Working with embeds has never been easier' ); ?></h3>
+			<p><?php _e( 'Paste in a YouTube URL on a new line, and watch it magically become an embedded video. Now try it with a tweet. Oh yeah &#8212; embedding has become a visual experience. The editor shows a true preview of your embedded content, saving you time and giving you confidence.' ); ?></p>
+			<p><?php _e( 'We&#8217;ve expanded the services supported by default, too &#8212; you can embed videos from CollegeHumor, playlists from YouTube, and talks from TED. <a href="http://codex.wordpress.org/Embeds">Check out all of the embeds</a> that WordPress supports.' ); ?></p>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="feature-section col two-col">
+		<div class="col-1">
+			<h3><?php _e( 'Focus on your content' ); ?></h3>
+			<p><?php _e( 'Writing and editing is smoother and more immersive with an editor that expands to fit your content as you write, and keeps the formatting tools available at all times.' ); ?></p>
+		</div>
+		<div class="col-2 last-feature">
+			<div class="about-video about-video-focus">
+				<?php
+					echo wp_video_shortcode( array(
+						'mp4'      => '//s.w.org/images/core/4.0/focus.mp4',
+						'ogv'      => '//s.w.org/images/core/4.0/focus.ogv',
+						'webm'      => '//s.w.org/images/core/4.0/focus.webm',
+						'loop'     => true,
+						'autoplay' => true,
+						'width'    => 500,
+						'height'   => 281
+					) );
+				?>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="feature-section col two-col">
+		<div class="col-1">
+			<img src="//s.w.org/images/core/4.0/plugins.png" />
+		</div>
+		<div class="col-2 last-feature">
+			<h3 class="higher"><?php _e( 'Finding the right plugin' ); ?></h3>
+			<p><?php _e( 'There are more than 30,000 free and open source plugins in the WordPress plugin directory. WordPress 4.0 makes it easier to find the right one for your needs, with new metrics, improved search, and a more visual browsing experience.' ); ?></p>
+			<a href="<?php echo admin_url( 'plugin-install.php' ); ?>" class="button button-large button-primary"><?php _e( 'Browse plugins' ); ?></a>
 		</div>
 	</div>
 </div>
 
-<div class="changelog">
-	<h3><?php _e( 'Dashboard Design' ); ?></h3>
+<hr />
 
-	<div class="feature-section text-features">
-		<h4><?php _e( 'Flyout Menus' ); ?></h4>
-		<p><?php _e( 'Speed up navigating the dashboard and reduce repetitive clicking with our new flyout submenus. As you hover over each main menu item in your dashboard navigation, the submenus will magically appear, providing single-click access to any dashboard screen.' ); ?></p>
-
-		<div>
-		<h4><?php _e( 'Header + Admin Bar = Toolbar' ); ?></h4>
-		<p><?php _e( 'To save space and increase efficiency, we&#8217;ve combined the admin bar and the old Dashboard header into one persistent toolbar. Hovering over the toolbar items will reveal submenus when available for quick access. ' ); ?></p>
-		</div>
-	</div>
-
-	<div class="feature-section screenshot-features">
-		<div class="angled-left">
-			<img src="images/screenshots/admin-flyouts.png" />
-			<h4><?php _e( 'Responsive Design' ); ?></h4>
-			<p><?php _e( 'Certain dashboard screens have been updated to look better at various sizes, including improved iPad/tablet support.' ); ?></p>
-		</div>
-		<div class="angled-right">
-			<img src="images/screenshots/help-screen.png" />
-			<h4><?php _e( 'Help Tabs' ); ?></h4>
-			<p><?php _e( 'The Help tabs located in the upper corner of the dashboard screens below your name have gotten a facelift. Help content is broken into smaller sections for easier access, with links to relevant documentation and the support forums always visible.' ); ?></p>
-		</div>
-	</div>
-</div>
-
-<div class="changelog">
-	<h3><?php _e( 'Feels Like the First Time' ); ?></h3>
-
-	<div class="feature-section images-stagger-right">
-		<div class="feature-images">
-			<img src="images/screenshots/new-feature-pointer.png" class="angled-right" />
-			<img src="images/screenshots/welcome-screen.png" class="angled-left" />
-		</div>
-		<div class="left-feature">
-			<h4><?php _e( 'New Feature Pointers' ); ?></h4>
-			<p><?php _e( 'When we add new features, move navigation, or do anything else with the dashboard that might throw you for a loop when you update your WordPress site, we&#8217;ll let you know about it with new feature pointers explaining the change.' ); ?></p>
-
-			<h4><?php _e( 'Post-update Changelog' ); ?></h4>
-			<p><?php _e( 'This screen! From now on when you update WordPress, you&#8217;ll be brought to this screen &mdash; also accessible any time from the W logo in the corner of the toolbar &mdash; to get an overview of what&#8217;s changed.' ); ?></p>
-
-			<h4><?php _e( 'Dashboard Welcome' ); ?></h4>
-			<p><?php _e( 'The dashboard home screen will have a Welcome area that displays when a new WordPress installation is accessed for the first time, prompting the site owner to complete various setup tasks. Once dismissed, this welcome can be accessed via the dashboard home screen options tab.' ); ?></p>
-		</div>
-	</div>
-
-</div>
-
-<div class="changelog">
-	<h3><?php _e( 'Content Tools' ); ?></h3>
-
-	<div class="feature-section three-col">
-		<div>
-			<h4><?php _e( 'Better Co-Editing' ); ?></h4>
-			<img src="images/screenshots/coediting.png" class="element-screenshot" />
-			<p><?php _e( 'Have you ever gone to edit a post after someone else has finished with it, only to get an alert that tells you the other person is still editing the post? From now on, you&#8217;ll only get that alert if another person is still on the editing screen &mdash; no more time lag.' ); ?></p>
-		</div>
-		<div>
-			<h4><?php _e( 'Tumblr Importer' ); ?></h4>
-			<p><?php _e( 'Want to import content from Tumblr to WordPress? No problem! Go to <span class="no-break">Tools &rarr; Import</span> to get the new Tumblr Importer, which maps your Tumblog posts to the matching WordPress post formats. Tip: Choose a theme designed to display post formats to get the greatest benefit from the importer.' ); ?></p>
-		</div>
-		<div class="last-feature">
-			<h4><?php _e( 'Widget Improvements' ); ?></h4>
-			<p><?php _e( 'Changing themes often requires widget re-configuration based on the number and position of sidebars. Now if you change back to a previous theme, the widgets will automatically go back to how you had them arranged in that theme. <em>Note: if you&#8217;ve added new widgets since the switch, you&#8217;ll need to rescue them from the Inactive Widgets area.</em>' ); ?></p>
-		</div>
-	</div>
-
-</div>
-
-<div class="changelog">
+<div class="changelog under-the-hood">
 	<h3><?php _e( 'Under the Hood' ); ?></h3>
 
-	<div class="feature-section three-col">
+	<div class="feature-section col three-col">
 		<div>
-			<h4><?php _e( 'Flexible Permalinks' ); ?></h4>
-			<p><?php _e( 'You have more freedom when choosing a post permalink structure. Skip the date information or add a category slug without a performance penalty.' ); ?></p>
+		<h4><?php _e( 'Customizer API' ); ?></h4>
+			<p><?php _e( 'Contexts, panels, and a wider array of controls are now supported in the customizer.' ); ?></p>
 		</div>
 		<div>
-			<h4><?php _e( 'Post Slugs: Less Funky' ); ?></h4>
-			<p><?php _e( 'Funky characters in post titles (e.g. curly quotes from a word processor) will no longer result in garbled post slugs.' ); ?></p>
+			<h4><?php _e( 'Query Ordering' ); ?></h4>
+			<p><?php
+				/* translators: 1: "ORDER BY" (SQL), 2: "WP_Query" */
+				printf( __( 'Developers have more flexibility creating %1$s clauses through %2$s.' ), '<code>ORDER&nbsp;BY</code>', '<code>WP_Query</code>' );
+			?></p>
 		</div>
 		<div class="last-feature">
-			<h4><?php _e( 'jQuery and jQuery UI' ); ?></h4>
-			<p><?php printf( __( 'WordPress now includes the entire jQuery UI stack and the latest version of jQuery: %s.' ), '1.7.1' ); ?></p>
+			<h4><?php _e( 'External Libraries' ); ?></h4>
+			<p><?php _e( 'Updated libraries: TinyMCE&nbsp;4.1.3, jQuery&nbsp;1.11.1, MediaElement&nbsp;2.15.' ); ?></p>
 		</div>
 	</div>
 
-	<div class="feature-section three-col">
-		<div>
-			<h4 style="direction:ltr">is_main_query()</h4>
-			<p><?php _e( 'This handy method will tell you if a <code>WP_Query</code> object is the main WordPress query or a secondary query.' ); ?></p>
-		</div>
-		<div>
-			<h4><?php _e( 'WP_Screen API' ); ?></h4>
-			<p><?php _e( 'WordPress has a nice new API for working with admin screens. Create rich screens, add help documentation, adapt to screen contexts, and more.' ); ?></p>
-		</div>
-		<div class="last-feature">
-			<h4><?php _e( 'Editor API Overhaul' ); ?></h4>
-			<p><?php _e( 'The new editor API automatically pulls in all the JS and CSS goodness for the editor. It even supports multiple editors on the same page.' ); ?></p>
-		</div>
+	<hr />
+
+	<div class="return-to-dashboard">
+		<?php if ( current_user_can( 'update_core' ) && isset( $_GET['updated'] ) ) : ?>
+		<a href="<?php echo esc_url( self_admin_url( 'update-core.php' ) ); ?>"><?php
+			is_multisite() ? _e( 'Return to Updates' ) : _e( 'Return to Dashboard &rarr; Updates' );
+		?></a> |
+		<?php endif; ?>
+		<a href="<?php echo esc_url( self_admin_url() ); ?>"><?php
+			is_blog_admin() ? _e( 'Go to Dashboard &rarr; Home' ) : _e( 'Go to Dashboard' ); ?></a>
 	</div>
 
-</div>
-
-<div class="return-to-dashboard">
-	<?php if ( current_user_can( 'update_core' ) && isset( $_GET['updated'] ) ) : ?>
-	<a href="<?php echo esc_url( network_admin_url( 'update-core.php' ) ); ?>"><?php
-		is_multisite() ? _e( 'Return to Updates' ) : _e( 'Return to Dashboard &rarr; Updates' );
-	?></a> |
-	<?php endif; ?>
-	<a href="<?php echo esc_url( admin_url() ); ?>"><?php _e( 'Go to Dashboard &rarr; Home' ); ?></a>
 </div>
 
 </div>
 <?php
 
-include( './admin-footer.php' );
+include( ABSPATH . 'wp-admin/admin-footer.php' );
 
 // These are strings we may use to describe maintenance/security releases, where we aim for no new strings.
 return;
@@ -205,5 +191,3 @@ _n_noop( '<strong>Version %1$s</strong> addressed some security issues and fixed
          '<strong>Version %1$s</strong> addressed some security issues and fixed %2$s bugs.' );
 
 __( 'For more information, see <a href="%s">the release notes</a>.' );
-
-?>

@@ -31,8 +31,8 @@
 	if (is_array($aryConf['data'])) foreach ($aryConf['data'] as $aryValues) {
 		$intCount++;
 		if ($intCount > $intMax) {
-			$aryOthers['u'] += (isset($aryValues['nb_uniq_visitors'])?$aryValues['nb_uniq_visitors']:0);
-			$aryOthers['v'] += (isset($aryValues['nb_visits'])?$aryValues['nb_visits']:0);
+			$aryOthers['u'] += $aryValues['nb_uniq_visitors'];
+			$aryOthers['v'] += $aryValues['nb_visits'];
 		} else echo '<tr><td>'.
 				$aryValues['label'].
 			'</td><td class="n">'.

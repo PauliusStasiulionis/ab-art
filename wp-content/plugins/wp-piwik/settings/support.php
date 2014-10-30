@@ -1,5 +1,8 @@
 <tr>
-	<td><a href="http://wordpress.org/tags/wp-piwik?forum_id=10"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a></td>
+	<td><a href="http://peepbo.de/board/viewforum.php?f=3"><?php _e('WP-Piwik support board','wp-piwik'); ?></a> (<?php _e('no registration required, English &amp; German','wp-piwik'); ?>)</td>	
+</tr>
+<tr>
+	<td><a href="http://wordpress.org/tags/wp-piwik?forum_id=10"><?php _e('WordPress.org forum about WP-Piwik','wp-piwik'); ?></a> (<?php _e('WordPress.org registration required, English','wp-piwik'); ?>)</td>
 </tr>
 <tr>
 	<td><?php _e('Please don\'t forget to vote the compatibility at the','wp-piwik'); ?> <a href="http://wordpress.org/extend/plugins/wp-piwik/">WordPress.org Plugin Directory</a>.</td>
@@ -20,7 +23,7 @@
 				_e('enabled','wp-piwik');
 			?></strong>.</li>
 		</ol>
-<?php if (self::$settings->getGlobalOption('piwik_token') && self::$settings->getGlobalOption('piwik_url')) { ?>
+<?php if (!(empty(self::$aryGlobalSettings['piwik_token']) || empty(self::$aryGlobalSettings['piwik_url']))) { ?>
 <?php 
 	if (isset($_GET['mode'])) {
 		switch ($_GET['mode']) {
@@ -29,13 +32,13 @@
 				self::loadTestscript();
 			break;
 			case 'reset':
-				echo '<p class="wp-piwik-eyecatcher"><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
+				echo '<p><strong class="wp-piwik-error">'.__('Please confirm your reset request','wp-piwik').':</strong> <a href="?page=wp-piwik/wp-piwik.php&tab=support&mode=resetconfirmed">'.__('YES, please reset <strong>all</strong> WP-Piwik settings <strong>except</strong> auth token and Piwi URL.', 'wp-piwik').'</a></p>';
 			break;
 			case 'resetconfirmed':
 				// Increase time limit before resetting
 				set_time_limit(0);
-				self::$settings->resetSettings((isset($_GET['full']) && $_GET['full']));
-				echo '<p class="wp-piwik-eyecatcher"><strong>'.__('WP-Piwik reset done','wp-piwik').'</strong></p>';
+				self::resetSettings();
+				echo '<p><strong>'.__('WP-Piwik reset done','wp-piwik').'</p>';
 			default:
 		} 
 	}

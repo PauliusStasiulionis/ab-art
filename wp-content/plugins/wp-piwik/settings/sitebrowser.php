@@ -12,9 +12,8 @@ if (!$bolFOpen && !$bolCURL) {
 if (!class_exists('WP_List_Table'))
 	require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 
-if (isset($_GET['wpmu_show_stats']) && ($_GET['wpmu_show_stats'] == (int) $_GET['wpmu_show_stats'])) {
+if (isset($_GET['wpmu_show_stats']) && ($_GET['wpmu_show_stats'] == (int) $_GET['wpmu_show_stats']))
 	$this->addPiwikSite();
-}
 
 // See wpengineer.com/2426/wp_list_table-a-step-by-step-guide/
 class SiteBrowser extends WP_List_Table {
@@ -23,23 +22,23 @@ class SiteBrowser extends WP_List_Table {
 	
 	function get_columns(){
   		$columns = array(
-			'id'    	=> __('ID','wp-piwik'),
-			'name' 		=> __('Title','wp-piwik'),
-			'siteurl'   => __('URL','wp-piwik'),
-			'piwikid'	=> __('Site ID (Piwik)','wp-piwik')
+			'id'    	=> 'ID',
+			'name' 		=> 'Title',
+			'siteurl'   => 'URL',
+			'piwikid'	=> 'Site ID (Piwik)'
 		);
 		return $columns;
 	}
 	
-	function prepare_items($bolNetwork = false) {
+	function prepare_items() {
   		$current_page = $this->get_pagenum();
 		$per_page = 10;
 		global $blog_id;
 		global $wpdb;
 		global $pagenow;
 		if (is_plugin_active_for_network('wp-piwik/wp-piwik.php')) {
-			$total_items = $wpdb->get_var('SELECT COUNT(*) FROM '.$wpdb->blogs);
-			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id LIMIT %d,%d',(($current_page-1)*$per_page),$per_page));
+			$total_items = $wpdb->get_var( $wpdb->prepare('SELECT COUNT(*) FROM '.$wpdb->blogs));
+			$aryBlogs = $wpdb->get_results($wpdb->prepare('SELECT blog_id FROM '.$wpdb->blogs.' ORDER BY blog_id LIMIT '.(($current_page-1)*$per_page).','.$per_page));
 			foreach ($aryBlogs as $aryBlog) {
 				$objBlog = get_blog_details($aryBlog->blog_id, true);
 				$this->aryData[] = array(
@@ -67,13 +66,9 @@ class SiteBrowser extends WP_List_Table {
     		'total_items' => $total_items,
     		'per_page'    => $per_page
   		));
-  		if ($bolNetwork) $pagenow = 'settings.php';
-		foreach ($this->aryData as $intKey => $aryDataset) {
-			if (empty($aryDataset['piwikid']) || !is_int($aryDataset['piwikid']))
+		foreach ($this->aryData as $intKey => $aryDataset)
+			if (empty($aryDataset['piwikid']))
 				$this->aryData[$intKey]['piwikid'] = '<a href="'.admin_url(($pagenow == 'settings.php'?'network/':'')).$pagenow.'?page=wp-piwik/wp-piwik.php&tab=sitebrowser'.($aryDataset['id'] != '-'?'&wpmu_show_stats='.$aryDataset['id']:'').'">Create Piwik site</a>';
-			if ($bolNetwork)
-				$this->aryData[$intKey]['name']	= '<a href="?page=wp-piwik_stats&wpmu_show_stats='.$aryDataset['id'].'">'.$aryDataset['name'].'</a>';	
-		}
   		$this->items = $this->aryData;
   		return count($this->items);
 	}
@@ -91,7 +86,7 @@ class SiteBrowser extends WP_List_Table {
 	}
 }
 $objSiteBrowser = new SiteBrowser();
-$intCnt = $objSiteBrowser->prepare_items($this->bolNetwork);
+$intCnt = $objSiteBrowser->prepare_items();
 if ($intCnt > 0) $objSiteBrowser->display();
 else echo '<p>No site configured yet.</p>'
 ?>

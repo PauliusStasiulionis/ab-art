@@ -21,13 +21,7 @@
 		$aryConf['params']['date'],
 		$aryConf['params']['limit']
 	);
-	$aryConf['data']['Actions'] = $this->callPiwikAPI(
-		'VisitsSummary.getActions',
-		$aryConf['params']['period'],
-		$aryConf['params']['date'],
-		$aryConf['params']['limit']
-	);
-		
+	
 	if (isset($aryConf['data']['Visitors']['result']) && $aryConf['data']['Visitors']['result'] ='error')
 		echo '<strong>'.__('Piwik error', 'wp-piwik').':</strong> '.htmlentities($aryConf['data']['Visitors']['message'], ENT_QUOTES, 'utf-8');
 	else {
@@ -51,8 +45,8 @@
 		$strCounter = substr($strCounter, 0, -1);
 
 /***************************************************************************/ ?>
-<div class="wp-piwik-graph-wide" title="<?php _e('The graph contains the values shown in the table below (visitors / unique / bounces). The red line show a linear trendline (unique).', 'wp-piwik'); ?>">
-	<div id="wp-piwik_stats_vistors_graph" style="height:220px;<?php if (!isset($aryConf['inline']) || $aryConf['inline'] != true) { ?>width:100%<?php } ?>"></div>
+<div class="wp-piwik-graph-wide">
+	<div id="wp-piwik_stats_vistors_graph" style="height:220px;<?php if (!isset($aryConf['inline']) || $aryConf['inline'] != true) { ?>width:490px<?php } ?>"></div>
 </div>
 <?php if (!isset($aryConf['inline']) || $aryConf['inline'] != true) { ?>
 <div class="table">
@@ -63,7 +57,6 @@
 				<th class="n"><?php _e('Visits', 'wp-piwik'); ?></th>
 				<th class="n"><?php _e('Unique', 'wp-piwik'); ?></th>
 				<th class="n"><?php _e('Bounced', 'wp-piwik'); ?></th>
-				<th class="n"><?php _e('Page Views', 'wp-piwik'); ?></th>
 			</tr>
 		</thead>
 		<tbody style="cursor:pointer;">
@@ -76,8 +69,6 @@
 					$aryConf['data']['Unique'][$strDate].
 					'</td><td class="n">'.
 					$aryConf['data']['Bounced'][$strDate].
-					'</td><td class="n">'.
-					$aryConf['data']['Actions'][$strDate].
 					'</td></tr>'."\n";
 		}
 		echo '<tr><td class="n" colspan="4"><strong>'.__('Unique TOTAL', 'wp-piwik').'</strong> '.__('Sum', 'wp-piwik').': '.$intUSum.' '.__('Avg', 'wp-piwik').': '.$intAvg.'</td></tr>';	
@@ -88,7 +79,7 @@
 </div>
 <?php } ?>
 <script type="text/javascript">
-$plotVisitors = $j.jqplot('wp-piwik_stats_vistors_graph', [[<?php echo $strValues; ?>],[<?php echo $strValuesU; ?>],[<?php echo $strBounced;?>]],
+$j.jqplot('wp-piwik_stats_vistors_graph', [[<?php echo $strValues; ?>],[<?php echo $strValuesU; ?>],[<?php echo $strBounced;?>]],
 {
 	axes:{yaxis:{min:0, tickOptions:{formatString:'%.0f'}},xaxis:{min:1,max:30,ticks:[<?php echo $strLabels; ?>]}},
 	seriesDefaults:{showMarker:false,lineWidth:1,fill:true,fillAndStroke:true,fillAlpha:0.9,trendline:{show:false,color:'#C00',lineWidth:1.5,type:'exp'}},

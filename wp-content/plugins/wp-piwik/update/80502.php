@@ -1,2 +1,2 @@
 <?php
-self::$settings->setGlobalOption('default_date', 'yesterday');
+self::$aryGlobalSettings['default_date'] = 'yesterday';

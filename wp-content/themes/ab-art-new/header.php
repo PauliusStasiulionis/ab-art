@@ -49,6 +49,7 @@
     <script src="<?php echo get_template_directory_uri(); ?>/js/script.js"></script>
     <?php if ( is_singular() ) wp_enqueue_script( 'comment-reply' ); ?>
     <?php wp_head(); ?>
+    <script src="<?php echo get_template_directory_uri(); ?>/js/script.js"></script>
     
 </head>    
 <body <?php body_class(); ?>>

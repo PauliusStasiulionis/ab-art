@@ -46,8 +46,10 @@
 
 	?></title>
     <link rel="stylesheet" type="text/css" media="all" href="<?php bloginfo( 'stylesheet_url' ); ?>" />
+    <script src="<?php echo get_template_directory_uri(); ?>/js/script.js"></script>
     <?php if ( is_singular() ) wp_enqueue_script( 'comment-reply' ); ?>
     <?php wp_head(); ?>
+    
 </head>    
 <body <?php body_class(); ?>>
     <div id="wrapper">

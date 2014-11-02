@@ -8,21 +8,23 @@ body {
 }
 #container {
     overflow: hidden;
+    width: 100%
 }
 
 
 #wrapper {
     max-width: 970px;
     margin: 0 auto;
+    position:relative;  
 }
 /*    sidebar       */
 
 #sidebar {
     background: #333333;
-    width: 135px;
+    width: 166px;
     padding-top: 32px;
     padding-bottom: 16px;
-    min-height: 470px;
+    min-height: 450px;
     float:left
 }
 
@@ -68,6 +70,9 @@ body {
 #content {
     float: left;
     background: #ffffff;
-    width: 805px;
+    width: 792px;
+    min-height: 450px;
+    padding-bottom: 16px;
+    padding-top: 32px;
 }
 

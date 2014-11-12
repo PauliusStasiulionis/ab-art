@@ -54,17 +54,13 @@ function cv_plugin_options_page() {
     if (isset($results[0])){
         $result = $results[0];
     }
-    if (saveCv()){
+    if (saveCv() === false){
         wp_die('There is problems on cv saving', 'Saving problems');
     }
 
     
     ?>
-
-    
-    
     <div id="wrap">
-        
         <form action="admin.php?page=cv_plugin" method='post' enctype="multipart/form-data" id="cv-plugin" name="cv-plugin-form">
             <table class="form-table">
                 <tr>
@@ -74,8 +70,7 @@ function cv_plugin_options_page() {
                 </tr>
                 <tr>
                     <td>
-                        <?php _e( 'Choose image files to upload' ); ?>
-                            <input type="file" name="CVimage" id="CVimage" size="35" class="uploadform"/>  
+                        <?php _e( 'Choose image files to upload' ); ?><input type="file" name="CVimage" id="CVimage" size="35" class="uploadform"/>  
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +80,7 @@ function cv_plugin_options_page() {
                                 echo ' wp-editor-expand';
                                 } ?>"></div>
                         <?php
-                        wp_editor($post->post_content, 'cv_content', array(
+                        wp_editor($post->post_content, 'cvDescription', array(
                             'dfw' => true,
                             'drag_drop_upload' => false,
                             'tabfocus_elements' => 'save-post',
@@ -100,8 +95,6 @@ function cv_plugin_options_page() {
                     </td>
                 </tr>
             </table>
-            
-       
             <?php wp_nonce_field('cd-plugin-option'); ?>
             <p class="submit">
                 <input name="save" type="submit" class="button-primary" value="<?php _e('Save Changes', 'cv_plugin'); ?>" />
@@ -114,11 +107,17 @@ function cv_plugin_options_page() {
 /**
  * 
  * @global WP_Filesystem_Base $wp_filesystem
+ * @global cvBase $cv
+ * @global wpdb $wpdb
  * @return boolean
  */
 function saveCv() {
-    if (empty($_POST)) return false;
- 
+    if (empty($_POST)){
+        return;
+    }
+    global $wp_filesystem;
+    global $cv;
+    global $wpdb;
     check_admin_referer('cd-plugin-option');
     $form_fields = array ('save');
     $method = ''; 
@@ -138,15 +137,23 @@ function saveCv() {
             request_filesystem_credentials($url, $method, true, false, $form_fields);
             return false;
         }
+        
         $uploadDir = wp_upload_dir();
-
-        global $wp_filesystem;
+        $fileName = $_FILES["CVimage"]['name'];
         if ( ! $wp_filesystem->put_contents( 
-                trailingslashit($uploadDir['path']).$_FILES["CVimage"]['name'], 
+                trailingslashit($uploadDir['path']).$fileName, 
                 $wp_filesystem->get_contents($_FILES["CVimage"]['tmp_name']), 
                 FS_CHMOD_FILE) 
                 ) {
             wp_die('error saving file!', 'error saving file!');
         } 
+        $wpdb->insert(
+                $wpdb->prefix.$cv->tableName,
+                array(
+                    'image_file_name' => $fileName,
+                    'image_file_subdir' => $uploadDir['subdir'],
+                    'description' => esc_sql($_POST['cvDescription'])
+                        )
+                );
     }
 }

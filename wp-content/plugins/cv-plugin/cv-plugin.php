@@ -27,28 +27,48 @@ if (!class_exists('cvBase')) {
          */
         var $plugin_name;
         
+        /**
+         *
+         * @var array 
+         */
         var $allowImageFormats = array('jpg','jpeg','png','gif');
         
-        function __construct() {
+        /**
+         *
+         * @var string 
+         */
+        var $tableName = 'cv_plugin';
+        
+        function __construct()
+        {
             $this->plugin_name = basename(dirname(__FILE__)).'/'.basename(__FILE__);
             register_activation_hook( $this->plugin_name, array(&$this, 'activate') );
             register_deactivation_hook( $this->plugin_name, array(&$this, 'deactivate') );
-            add_filter('the_content', array(&$this, 'convert_shortcode'));
+            add_shortcode('cv', array(&$this, 'showCv' ));
             require_once( dirname( __FILE__ ) .'/admin/cv-admin.php');
         }
         
         /**
          * 
+         * @param type $atts
          */
-        function convert_shortcode($content)
+        function showCv( $atts ) 
         {
-            if ( stristr( $content, '[cv]' )) {
-                return $content."\n shudas";
-            }
-            return $content;
-        } 
+            extract(
+                    shortcode_atts(
+                            array(
+                                'id' => 0
+                                ), 
+                            $atts 
+                            )
+                    );
+            $out = 'susudasd';
+            return $out;
+        }
+
+
         /**
-         * 
+         * Activate plugin
          */
         function activate()
         {
@@ -57,11 +77,12 @@ if (!class_exists('cvBase')) {
         }
         
         /**
-         * 
+         * Deactivate plugin
          */
         function deactivate()
         {
-             
+            include_once (dirname (__FILE__) . '/admin/install.php');
+            uninstall_cv_plugin();
         }
     }
     global $cv;

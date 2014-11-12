@@ -58,6 +58,5 @@ function install_cv_plugin()
 function uninstall_cv_plugin()
 {
     global $wpdb;
-    
-    $wpdb->query("DROP TABLE IF EXISTS `{$wpdb->prefix}cv_plugin`");
+    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}cv_plugin");
 }

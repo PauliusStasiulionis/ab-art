@@ -164,6 +164,7 @@ function addCv()
                     wp_editor('', 'cvDescription', array(
                         'dfw' => true,
                         'drag_drop_upload' => false,
+                        'wpautop' => true,
                         'tabfocus_elements' => 'save-post',
                         'editor_height' => 300,
                         'tinymce' => array(
@@ -194,6 +195,7 @@ function editCv($id) {
             $id
         )
     );
+    //$row->description = format_to_edit($row->description);
     ?>
 <div id="wrap">
     <h2><?php _e('Edit CV');?></h2> 
@@ -224,6 +226,7 @@ function editCv($id) {
                     <?php
                     wp_editor($row->description, 'cvDescription', array(
                         'dfw' => true,
+                        'wpautop' => true,
                         'drag_drop_upload' => false,
                         'tabfocus_elements' => 'save-post',
                         'editor_height' => 300,
@@ -298,8 +301,8 @@ function saveCv($id) {
                        'org_img_file_name' => $fileData['fileName'],
                        'sml_img_file_name' => $fileData['smallFileName'],
                        'images_file_subdir' => $fileData['subdir'],
-                       'name' => esc_sql($_POST['CVName']),
-                       'description' => esc_sql($_POST['cvDescription'])
+                       'name' => $_POST['CVName'],
+                       'description' => $_POST['cvDescription']
                            )
                    );    
         } else {
@@ -308,8 +311,8 @@ function saveCv($id) {
                        'org_img_file_name' => $fileData['fileName'],
                        'sml_img_file_name' => $fileData['smallFileName'],
                        'images_file_subdir' => $fileData['subdir'],
-                       'name' => esc_sql($_POST['CVName']),
-                       'description' => esc_sql($_POST['cvDescription'])
+                       'name' => $_POST['CVName'],
+                       'description' => $_POST['cvDescription']
                            ), 
                     array('pid' => (int)$id)
                     );

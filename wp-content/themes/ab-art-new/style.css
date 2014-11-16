@@ -3,7 +3,7 @@
     Author     : Paulius Stasiulionis
 */
 /* Main page option */
-*{font-family: Tw Cen MT}
+*{font-family: Calibri}
 
 body {
     background: #f2f2f2;
@@ -12,24 +12,19 @@ body {
     overflow: hidden;
     width: 100%
 }
-
 #wrapper {
     max-width: 970px;
     margin: 0 auto;
     position:relative;  
 }
-/*    menubar       */
-
-
 /* logo */
 #logo {
     background-image: url('images/logo.png');
     background-repeat: no-repeat;
-    height: 75px;
-    width: 163px;
+    height: 100px;
+    width: 218px;
     margin: 16px auto 0px auto;
 }
-
 /* menu  */
 .menu{
     text-align: center;

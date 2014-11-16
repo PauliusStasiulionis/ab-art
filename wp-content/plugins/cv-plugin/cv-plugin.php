@@ -93,7 +93,7 @@ if (!class_exists('cvBase')) {
                     .'" alt="CV picture">';
             $out .= '</div>'."\n";
             $out .= '<div id="cv-description">'."\n";
-            $out .= $result["description"]."\n";
+            $out .= apply_filters('the_content', $result["description"])."\n";
             $out .= '</div>'."\n";
             
             return $out;

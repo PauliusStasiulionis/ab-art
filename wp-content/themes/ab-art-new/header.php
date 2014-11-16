@@ -55,6 +55,12 @@
 <body <?php body_class(); ?>>
     <div id="wrapper">
         <div id="container">
+            <div id="menubar">
+                
+                <div id="logo"></div>
+                <?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>     
+            </div>
+          
             
 
     

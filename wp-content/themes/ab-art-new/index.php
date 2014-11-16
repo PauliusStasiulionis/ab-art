@@ -3,11 +3,11 @@
 /**
  * @author Paulius Stasiulionis
  * @since 2014-10-26
- * @version 2014-10-26
+ * @version 2014-11-15
  */
 ?>
 <?php get_header(); ?>
-<?php get_sidebar(); ?>
+<?php //get_sidebar(); ?>
 
 <div id="content">
     <?php

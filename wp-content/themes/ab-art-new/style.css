@@ -2,6 +2,8 @@
     Created on : 2014-10-26, 15.43.11
     Author     : Paulius Stasiulionis
 */
+/* Main page option */
+*{font-family: Tw Cen MT}
 
 body {
     background: #f2f2f2;
@@ -11,23 +13,15 @@ body {
     width: 100%
 }
 
-
 #wrapper {
     max-width: 970px;
     margin: 0 auto;
     position:relative;  
 }
-/*    sidebar       */
+/*    menubar       */
 
-#sidebar {
-    background: #333333;
-    width: 166px;
-    padding-top: 32px;
-    padding-bottom: 16px;
-    min-height: 450px;
-    float:left
-}
 
+/* logo */
 #logo {
     background-image: url('images/logo.png');
     background-repeat: no-repeat;
@@ -35,44 +29,49 @@ body {
     width: 74px;
     margin: 16px auto 0px auto;
 }
+
+/* menu  */
+.menu{
+    text-align: center;
+    margin: 5px auto;
+
+}
 .current_page_item {
-    background: #605d5d;
 }
 .current_page_item a{
-    text-decoration: none!important;
-    color: #ffffff!important; 
+    border-bottom: thin solid #30d8f0;
+    color: #605d5d!important; 
 }
 .menu ul{
     list-style-type: none;
-    padding-left: 5px;
-    padding-right: 5px;
-    text-align:center;
-}
-.menu ul li.page_item{
-    margin: 14px 0px 14px 0px;
-}
-
-.menu ul li.page_item a:hover{
-    text-decoration: none;
-    color: #ffffff;
-}
-.menu ul li.page_item a:active{
-    text-decoration: none;
-    color: #ffffff; 
+    margin: 0;                 
+    padding: 0;                
+    display: inline-block;     
+    vertical-align: top;  
 }
 .menu ul li a{
     text-decoration: none;
+    display: block;
+    color: #333333;
+    text-decoration: none;
+    
+}
+.menu ul li.page_item{
+    float: left;
+    padding: 0 10px;
+}
+.menu ul li.page_item a:hover{
+    text-decoration: none;
     color: #605d5d;
 }
-
-
 /* content */
 #content {
     float: left;
     background: #ffffff;
-    width: 792px;
+    width: 100%;
     min-height: 450px;
     padding-bottom: 16px;
-    padding-top: 32px;
+    padding-top: 16px;
 }
+
 

@@ -84,7 +84,7 @@ if (!class_exists('cvBase')) {
                             $id ),
                     ARRAY_A
                     );
-            $out .= '<link href="'.plugins_url('/style/style.css', __FILE__).'" rel="stylesheet" type="text/css" />'; 
+            $out = '<link href="'.plugins_url('/style/style.css', __FILE__).'" rel="stylesheet" type="text/css" />'; 
             $out .= '<script src="'.plugins_url('/js/script.js', __FILE__).'"></script>';
             $out .= '<div id="cv-picture">';
             $out .= '<img src="/wp-content/uploads'

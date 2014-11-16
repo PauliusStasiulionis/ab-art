@@ -23,7 +23,8 @@
     margin-right: auto; 
 }
 #cv-description {
-    width: 485px;
+    margin-left: 10px;
+    width: 475px;
     float: left;
     display: none;
 }

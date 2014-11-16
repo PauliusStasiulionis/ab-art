@@ -328,8 +328,9 @@ function saveImageFile($post_data)
 {
     global $wp_filesystem;
     
+    $cvImageWidth = 485; 
     $cvImageHeigh = 550;
-    $cvImageWidth = 485;   
+      
     
     $return = array();
     if ($_FILES['CVImage']["tmp_name"]){
@@ -361,17 +362,21 @@ function saveImageFile($post_data)
            list($width, $height) = getimagesize(
                    $tmpFile
                    );
-           if ($width > $height) {
-               $newWidth = $cvImageWidth;
-               $divisor = $width / $cvImageWidth;
-               $newHeight = floor( $height / $divisor);
-           }
-           else {
-               $newHeight = $cvImageHeigh;
-               $divisor = $height / $cvImageHeigh;
-               $newWidth = floor( $width / $divisor );
-           }
-
+            if ($width > $height) {
+                $newWidth = $cvImageWidth;
+                $divisor = $width / $cvImageWidth;
+                $newHeight = floor( $height / $divisor);
+            }
+            else {
+                $newHeight = $cvImageHeigh;
+                $divisor = $height / $cvImageHeigh;
+                $newWidth = floor( $width / $divisor );
+            }
+            if ($width == $height) {
+                $newWidth = $cvImageWidth;
+                $newHeight = $cvImageWidth;
+            }
+            
            $cvimagesmall = imagecreatetruecolor($newWidth, $newHeight);
            imagecopyresized(
                    $cvimagesmall,

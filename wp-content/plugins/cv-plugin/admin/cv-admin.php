@@ -51,57 +51,204 @@ function cv_plugin_options_page() {
         wp_die(__('You do not have sufficient permissions to access this page.'));
     }
     $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}cv_plugin");
+    
+     if (isset($_GET["task"]))
+        $task = $_GET["task"]; 
+    else
+        $task = '';
+    if (isset($_GET["id"]))
+        $id = $_GET["id"];
+    else
+        $id = 0;
+    
+    
+    switch ($task) {
+
+        case 'add_cv':
+            addCv();
+            break;
+        case 'edit_cv':
+            if ($id)
+                editCv($id);
+            else {
+                $id = $wpdb->get_var("SELECT MAX( pid ) FROM " . $wpdb->prefix . "cv_plugin");
+                editCv($id);
+            }
+            break;
+
+        case 'save':
+            saveCv($id);
+            showCv();
+            break;
+        case 'remove_cv':
+            removeCv($id);
+            showCv();
+            break;
+        default:
+            showCv();
+            break;
+    }
+}
+
+
+
+/**
+ * This function shows all cv
+ * 
+ * @global wpdb $wpdb
+ */
+function showCv() {
+    
+    /* @var $wpdb wpdb */
+    global $wpdb;
+    
+    $results = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}cv_plugin");
     if (isset($results[0])){
         $result = $results[0];
     }
-    if (saveCv() === false){
-        wp_die('There is problems on cv saving', 'Saving problems');
-    }
-
-    
     ?>
-    <div id="wrap">
-        <form action="admin.php?page=cv_plugin" method='post' enctype="multipart/form-data" id="cv-plugin" name="cv-plugin-form">
-            <table class="form-table">
+ <div id="wrap">
+        <h2><?php _e('CV manager');?> <a class="add-new-h2" href="admin.php?page=cv_plugin&task=add_cv">Add New</a></h2> 
+        <table class="wp-list-table widefat fixed ">
+            <thead>
                 <tr>
-                    <th>
-                        <h2><?php _e('Edit your CV');?></h2>
-                    </th>
+                    <td style="width:15px">Id</td>
+                    <td>Name</td>
+                    <td>Delete</td>
                 </tr>
+            </thead>
+            <tbody>
+                <?php foreach($results as $result) {?>
                 <tr>
-                    <td>
-                        <?php _e( 'Choose image files to upload' ); ?><input type="file" name="CVimage" id="CVimage" size="35" class="uploadform"/>  
-                    </td>
+                    <td><?php echo $result->pid?></td>
+                    <td><a class="row-title" title="Edit <?php echo $result->name?>" href="admin.php?page=cv_plugin&task=edit_cv&id=<?php echo $result->pid?>"><?php echo $result->name?></a></td>
+                    <td><a title="Delete <?php echo $result->name?>" href="admin.php?page=cv_plugin&task=remove_cv&id=<?php echo $result->pid?>">DELETE</a></td>
                 </tr>
-                <tr>
-                    <td>
-                        <div id="cvdivrich" class="cvarea 
-                            <?php if ($_wp_editor_expand) {
-                                echo ' wp-editor-expand';
-                                } ?>"></div>
-                        <?php
-                        wp_editor($post->post_content, 'cvDescription', array(
-                            'dfw' => true,
-                            'drag_drop_upload' => false,
-                            'tabfocus_elements' => 'save-post',
-                            'editor_height' => 300,
-                            'tinymce' => array(
-                                'resize' => false,
-                                'wp_autoresize_on' => $_wp_editor_expand,
-                                'add_unload_trigger' => false,
-                            ),
-                        ));
-                        ?>    
-                    </td>
-                </tr>
-            </table>
-            <?php wp_nonce_field('cd-plugin-option'); ?>
-            <p class="submit">
-                <input name="save" type="submit" class="button-primary" value="<?php _e('Save Changes', 'cv_plugin'); ?>" />
-            </p>
-        </form>
+                <?php } ?>
+            </tbody>  
+        </table>
     </div>
-    <?php
+   <?php 
+}
+/**
+ * 
+ * This function add new cv
+ * 
+ * @global wpdb $wpdb
+ */
+function addCv()
+{   
+    ?>
+<div id="wrap">
+    <h2><?php _e('Add new CV');?></h2> 
+    <form action="admin.php?page=cv_plugin&task=save" method='post' enctype="multipart/form-data" id="cv-plugin" name="cv-plugin-form">
+        <table class="form-table">
+            <tr>
+                <td>
+                    <?php _e( 'Choose image files to upload' ); ?><input type="file" name="CVImage" id="CVImage" size="35" class="uploadform"/>  
+                </td>
+            </tr>
+            <tr>
+                <td><label for="name"><?php _e( 'Name' ); ?>: </label><input type="text" name="CVName"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="cvdivrich" class="cvarea 
+                        <?php if ($_wp_editor_expand) {
+                            echo ' wp-editor-expand';
+                            } ?>"></div>
+                    <?php
+                    wp_editor($post->post_content, 'cvDescription', array(
+                        'dfw' => true,
+                        'drag_drop_upload' => false,
+                        'tabfocus_elements' => 'save-post',
+                        'editor_height' => 300,
+                        'tinymce' => array(
+                            'resize' => false,
+                            'wp_autoresize_on' => $_wp_editor_expand,
+                            'add_unload_trigger' => false,
+                        ),
+                    ));
+                    ?>    
+                </td>
+            </tr>
+        </table>
+        <?php wp_nonce_field('cd-plugin-option'); ?>
+        <p class="submit">
+            <input name="save" type="submit" class="button-primary" value="<?php _e('Save Changes', 'cv_plugin'); ?>" />
+        </p>
+    </form>
+</div>
+<?php
+}
+
+function editCv($id) {
+    global $wpdb;
+    $row = $wpdb->get_row(
+        sprintf(
+            "SELECT * FROM " . $wpdb->prefix . "cv_plugin WHERE pid = %d",
+            $id
+        )
+    );
+    ?>
+<div id="wrap">
+    <h2><?php _e('Edit CV');?></h2> 
+    <form action="admin.php?page=cv_plugin&task=save&id=<?php echo $row->pid?>" method='post' enctype="multipart/form-data" id="cv-plugin" name="cv-plugin-form">
+        <table class="form-table">
+            <tr>
+                <td>
+                    <img src="/wp-content/uploads<?php echo trailingslashit($row->images_file_subdir).$row->sml_img_file_name;?>" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <?php _e( 'Choose image files to upload' ); ?><input type="file" name="CVImage" id="CVImage" size="35" class="uploadform"/>  
+                </td>
+            </tr>
+            <tr>
+                <td><label for="name"><?php _e( 'Name' ); ?>: </label><input type="text" name="CVName" value="<?php echo $row->name ?>"/></td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="cvdivrich" class="cvarea 
+                        <?php if ($_wp_editor_expand) {
+                            echo ' wp-editor-expand';
+                            } ?>"></div>
+                    <?php
+                    wp_editor($row->description, 'cvDescription', array(
+                        'dfw' => true,
+                        'drag_drop_upload' => false,
+                        'tabfocus_elements' => 'save-post',
+                        'editor_height' => 300,
+                        'tinymce' => array(
+                            'resize' => false,
+                            'wp_autoresize_on' => $_wp_editor_expand,
+                            'add_unload_trigger' => false,
+                        ),
+                    ));
+                    ?>    
+                </td>
+            </tr>
+        </table>
+        <?php wp_nonce_field('cd-plugin-option'); ?>
+        <p class="submit">
+            <input name="save" type="submit" class="button-primary" value="<?php _e('Save Changes', 'cv_plugin'); ?>" />
+        </p>
+    </form>
+</div>
+<?php
+}
+
+/**
+ * 
+ * @global wpdb $wpdb
+ * @global cvBase $cv
+ */
+function removeCv($id)
+{
+    global $wpdb;
+    global $cv;
+    $wpdb->delete($wpdb->prefix.$cv->tableName, array('pid' => $id));
 }
 
 /**
@@ -111,7 +258,7 @@ function cv_plugin_options_page() {
  * @global wpdb $wpdb
  * @return boolean
  */
-function saveCv() {
+function saveCv($id) {
     if (empty($_POST)){
         return;
     }
@@ -121,7 +268,8 @@ function saveCv() {
     check_admin_referer('cd-plugin-option');
     $form_fields = array ('save');
     $method = ''; 
- 
+    $cvImageHeigh = 550;
+    $cvImageWidth = 485;   
     // check to see if we are trying to save a file
     if (isset($_POST['save'])) {
         $url = wp_nonce_url('admin.php?page=cv_plugin','cd-plugin-option');
@@ -138,22 +286,89 @@ function saveCv() {
             return false;
         }
         
+        $tmpFile = $_FILES['CVImage']['tmp_name'];
+        switch($_FILES['CVImage']['type']){
+            case 'image/jpeg':
+                $image = imagecreatefromjpeg($tmpFile);
+                break;
+            case 'image/png':
+                $image = imagecreatefrompng($tmpFile);
+                break;
+            case 'image/gif':
+                $image = imagecreatefromgif($tmpFile);
+                break;	
+            default:
+                echo 'Image file format should be jpg, png or gif';
+                return;
+            }
+        
         $uploadDir = wp_upload_dir();
-        $fileName = $_FILES["CVimage"]['name'];
+        $fileName = $_FILES['CVImage']['name'];
         if ( ! $wp_filesystem->put_contents( 
                 trailingslashit($uploadDir['path']).$fileName, 
-                $wp_filesystem->get_contents($_FILES["CVimage"]['tmp_name']), 
+                $wp_filesystem->get_contents($tmpFile), 
                 FS_CHMOD_FILE) 
                 ) {
             wp_die('error saving file!', 'error saving file!');
-        } 
-        $wpdb->insert(
-                $wpdb->prefix.$cv->tableName,
-                array(
-                    'image_file_name' => $fileName,
-                    'image_file_subdir' => $uploadDir['subdir'],
-                    'description' => esc_sql($_POST['cvDescription'])
-                        )
-                );
+        } else {
+           
+            list($width, $height) = getimagesize(
+                    $tmpFile
+                    );
+            if ($width > $height) {
+                $newWidth = $cvImageWidth;
+                $divisor = $width / $cvImageWidth;
+                $newHeight = floor( $height / $divisor);
+            }
+            else {
+                $newHeight = $cvImageHeigh;
+                $divisor = $height / $cvImageHeigh;
+                $newWidth = floor( $width / $divisor );
+            }
+            
+            $cvimagesmall = imagecreatetruecolor($newWidth, $newHeight);
+            imagecopyresized(
+                    $cvimagesmall,
+                    $image,
+                    0, 0, 0, 0,
+                    $newWidth,
+                    $newHeight,
+                    $width,
+                    $height
+                    );
+            $parsedFileName = \pathinfo($fileName);
+            $smallFileName = $parsedFileName['filename']."_small.jpg";
+            imagejpeg($cvimagesmall,
+                    trailingslashit(
+                            $uploadDir['path']
+                            )
+                    .$smallFileName, 100
+                    
+                    );
+        }
+        if(!$id){
+            $wpdb->insert(
+                   $wpdb->prefix.$cv->tableName,
+                   array(
+                       'org_img_file_name' => $fileName,
+                       'sml_img_file_name' => $smallFileName,
+                       'images_file_subdir' => $uploadDir['subdir'],
+                       'name' => esc_sql($_POST['CVName']),
+                       'description' => esc_sql($_POST['cvDescription'])
+                           )
+                   );    
+        } else {
+            $wpdb->update($wpdb->prefix.$cv->tableName, 
+                    array(
+                       'org_img_file_name' => $fileName,
+                       'sml_img_file_name' => $smallFileName,
+                       'images_file_subdir' => $uploadDir['subdir'],
+                       'name' => esc_sql($_POST['CVName']),
+                       'description' => esc_sql($_POST['cvDescription'])
+                           ), 
+                    array('pid' => $id)
+                    );
+        }
+       
     }
 }

@@ -1,0 +1,29 @@
+/**
+ * Plugin Name: Plugin name
+ * Plugin URI: Project 
+ * Description: CV Plugin.
+ * Version: 1.0
+ * Author: Paulius Stasiulionis
+ * Author URI: http://www.ab-art.lt/
+ * License: GPL2
+ */
+/* 
+    Created on : 2014-11-15, 19.12.21
+    Author     : Pawliukas
+*/
+
+#cv-picture {
+    width: 485px;
+    float: left;
+    display: none;
+}
+#cv-picture img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+}
+#cv-description {
+    width: 485px;
+    float: left;
+    display: none;
+}

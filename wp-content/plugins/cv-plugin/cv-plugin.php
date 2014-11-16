@@ -50,22 +50,54 @@ if (!class_exists('cvBase')) {
         
         /**
          * 
-         * @param type $atts
+         * @global wpdb $wpdb
+         * @param array $atts
+         * @return string
          */
         function showCv( $atts ) 
         {
             extract(
-                    shortcode_atts(
-                            array(
-                                'id' => 0
-                                ), 
-                            $atts 
-                            )
+                shortcode_atts(
+                    array(
+                        'id' => 0
+                        ), 
+                    $atts 
+                    )
+                );
+            return $this->render($atts['id']);
+        }
+        
+        /**
+         * 
+         * @global wpdb $wpdb
+         * @param string $id
+         * @return string
+         */
+        function render($id) 
+        {
+            
+            global $wpdb;
+            $result = $wpdb->get_row(
+                    $wpdb->prepare(
+                            "SELECT * FROM {$wpdb->prefix}{$this->tableName} "
+                            . "WHERE pid = %d",
+                            $id ),
+                    ARRAY_A
                     );
-            $out = 'susudasd';
+            $out .= '<link href="'.plugins_url('/style/style.css', __FILE__).'" rel="stylesheet" type="text/css" />'; 
+            $out .= '<script src="'.plugins_url('/js/script.js', __FILE__).'"></script>';
+            $out .= '<div id="cv-picture">';
+            $out .= '<img src="/wp-content/uploads'
+                    .trailingslashit($result['images_file_subdir'])
+                    .$result['sml_img_file_name']
+                    .'" />';
+            $out .= '</div>'."\n";
+            $out .= '<div id="cv-description">'."\n";
+            $out .= $result["description"]."\n";
+            $out .= '</div>'."\n";
+            
             return $out;
         }
-
 
         /**
          * Activate plugin

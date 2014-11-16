@@ -43,8 +43,10 @@ function install_cv_plugin()
         
     $sql = "CREATE TABLE `{$wpdb->prefix}cv_plugin`( ".  
     "`pid` INT NOT NULL AUTO_INCREMENT, ".
-    "`image_file_name` VARCHAR(512) NOT NULL DEFAULT '', ".
-    "`image_file_subdir` VARCHAR(512) NOT NULL DEFAULT '', ".
+    "`name` VARCHAR(245) NOT NULL DEFAULT 'Name', ".
+    "`org_img_file_name` VARCHAR(512) NOT NULL DEFAULT '', ".
+    "`sml_img_file_name` VARCHAR(512) NOT NULL DEFAULT '', ".
+    "`images_file_subdir` VARCHAR(512) NOT NULL DEFAULT '', ".
     "`description` TEXT, ".
     "PRIMARY KEY (`pid`) ".
     ") $charset_collate;";

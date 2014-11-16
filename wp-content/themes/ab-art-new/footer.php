@@ -12,6 +12,10 @@
  * @version 2014-10-26
  */
 ?>
+        <div id="footer">
+            Kontaktai <a href="mailto:aiste@ab-art.lt">aiste@ab-art.lt</a>
+            Tel: +37068409001
+        </div>
         </div><!-- div container-->    
     </div><!-- div wrapper -->
     

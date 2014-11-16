@@ -90,7 +90,7 @@ if (!class_exists('cvBase')) {
             $out .= '<img src="/wp-content/uploads'
                     .trailingslashit($result['images_file_subdir'])
                     .$result['sml_img_file_name']
-                    .'" />';
+                    .'" alt="CV picture">';
             $out .= '</div>'."\n";
             $out .= '<div id="cv-description">'."\n";
             $out .= $result["description"]."\n";

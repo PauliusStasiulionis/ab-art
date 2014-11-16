@@ -13,6 +13,8 @@
  * @since 2014-11-05
  * @version 2014-11-05
  */
+
+
 add_action('admin_init', 'cvSettings');
 add_action('admin_menu', 'cvPluginMenu');
 
@@ -138,6 +140,7 @@ function showCv() {
  */
 function addCv()
 {   
+    $_wp_editor_expand = false;
     ?>
 <div id="wrap">
     <h2><?php _e('Add new CV');?></h2> 
@@ -158,7 +161,7 @@ function addCv()
                             echo ' wp-editor-expand';
                             } ?>"></div>
                     <?php
-                    wp_editor($post->post_content, 'cvDescription', array(
+                    wp_editor('', 'cvDescription', array(
                         'dfw' => true,
                         'drag_drop_upload' => false,
                         'tabfocus_elements' => 'save-post',
@@ -184,6 +187,7 @@ function addCv()
 
 function editCv($id) {
     global $wpdb;
+    $_wp_editor_expand = false;
     $row = $wpdb->get_row(
         sprintf(
             "SELECT * FROM " . $wpdb->prefix . "cv_plugin WHERE pid = %d",
@@ -197,16 +201,19 @@ function editCv($id) {
         <table class="form-table">
             <tr>
                 <td>
-                    <img src="/wp-content/uploads<?php echo trailingslashit($row->images_file_subdir).$row->sml_img_file_name;?>" />
+                    <img src="/wp-content/uploads<?php echo trailingslashit($row->images_file_subdir).$row->sml_img_file_name;?>" alt="CV picture" >
+                    <input type="hidden" value="<?php echo $row->org_img_file_name?>" name="org_img_file_name">
+                    <input type="hidden" value="<?php echo $row->sml_img_file_name?>" name="sml_img_file_name">
+                    <input type="hidden" value="<?php echo $row->images_file_subdir?>" name="images_file_subdir">
                 </td>
             </tr>
             <tr>
                 <td>
-                    <?php _e( 'Choose image files to upload' ); ?><input type="file" name="CVImage" id="CVImage" size="35" class="uploadform"/>  
+                    <?php _e( 'Choose image files to upload' ); ?><input type="file" name="CVImage" id="CVImage" size="35" class="uploadform">  
                 </td>
             </tr>
             <tr>
-                <td><label for="name"><?php _e( 'Name' ); ?>: </label><input type="text" name="CVName" value="<?php echo $row->name ?>"/></td>
+                <td><label for="name"><?php _e( 'Name' ); ?>: </label><input type="text" name="CVName" value="<?php echo $row->name ?>"></td>
             </tr>
             <tr>
                 <td>
@@ -232,7 +239,7 @@ function editCv($id) {
         </table>
         <?php wp_nonce_field('cd-plugin-option'); ?>
         <p class="submit">
-            <input name="save" type="submit" class="button-primary" value="<?php _e('Save Changes', 'cv_plugin'); ?>" />
+            <input name="save" type="submit" class="button-primary" value="<?php _e('Save Changes', 'cv_plugin'); ?>">
         </p>
     </form>
 </div>
@@ -268,8 +275,6 @@ function saveCv($id) {
     check_admin_referer('cd-plugin-option');
     $form_fields = array ('save');
     $method = ''; 
-    $cvImageHeigh = 550;
-    $cvImageWidth = 485;   
     // check to see if we are trying to save a file
     if (isset($_POST['save'])) {
         $url = wp_nonce_url('admin.php?page=cv_plugin','cd-plugin-option');
@@ -285,74 +290,14 @@ function saveCv($id) {
             request_filesystem_credentials($url, $method, true, false, $form_fields);
             return false;
         }
-        
-        $tmpFile = $_FILES['CVImage']['tmp_name'];
-        switch($_FILES['CVImage']['type']){
-            case 'image/jpeg':
-                $image = imagecreatefromjpeg($tmpFile);
-                break;
-            case 'image/png':
-                $image = imagecreatefrompng($tmpFile);
-                break;
-            case 'image/gif':
-                $image = imagecreatefromgif($tmpFile);
-                break;	
-            default:
-                echo 'Image file format should be jpg, png or gif';
-                return;
-            }
-        
-        $uploadDir = wp_upload_dir();
-        $fileName = $_FILES['CVImage']['name'];
-        if ( ! $wp_filesystem->put_contents( 
-                trailingslashit($uploadDir['path']).$fileName, 
-                $wp_filesystem->get_contents($tmpFile), 
-                FS_CHMOD_FILE) 
-                ) {
-            wp_die('error saving file!', 'error saving file!');
-        } else {
-           
-            list($width, $height) = getimagesize(
-                    $tmpFile
-                    );
-            if ($width > $height) {
-                $newWidth = $cvImageWidth;
-                $divisor = $width / $cvImageWidth;
-                $newHeight = floor( $height / $divisor);
-            }
-            else {
-                $newHeight = $cvImageHeigh;
-                $divisor = $height / $cvImageHeigh;
-                $newWidth = floor( $width / $divisor );
-            }
-            
-            $cvimagesmall = imagecreatetruecolor($newWidth, $newHeight);
-            imagecopyresized(
-                    $cvimagesmall,
-                    $image,
-                    0, 0, 0, 0,
-                    $newWidth,
-                    $newHeight,
-                    $width,
-                    $height
-                    );
-            $parsedFileName = \pathinfo($fileName);
-            $smallFileName = $parsedFileName['filename']."_small.jpg";
-            imagejpeg($cvimagesmall,
-                    trailingslashit(
-                            $uploadDir['path']
-                            )
-                    .$smallFileName, 100
-                    
-                    );
-        }
+        $fileData = saveImageFile($_POST);
         if(!$id){
             $wpdb->insert(
                    $wpdb->prefix.$cv->tableName,
                    array(
-                       'org_img_file_name' => $fileName,
-                       'sml_img_file_name' => $smallFileName,
-                       'images_file_subdir' => $uploadDir['subdir'],
+                       'org_img_file_name' => $fileData['fileName'],
+                       'sml_img_file_name' => $fileData['smallFileName'],
+                       'images_file_subdir' => $fileData['subdir'],
                        'name' => esc_sql($_POST['CVName']),
                        'description' => esc_sql($_POST['cvDescription'])
                            )
@@ -360,15 +305,101 @@ function saveCv($id) {
         } else {
             $wpdb->update($wpdb->prefix.$cv->tableName, 
                     array(
-                       'org_img_file_name' => $fileName,
-                       'sml_img_file_name' => $smallFileName,
-                       'images_file_subdir' => $uploadDir['subdir'],
+                       'org_img_file_name' => $fileData['fileName'],
+                       'sml_img_file_name' => $fileData['smallFileName'],
+                       'images_file_subdir' => $fileData['subdir'],
                        'name' => esc_sql($_POST['CVName']),
                        'description' => esc_sql($_POST['cvDescription'])
                            ), 
-                    array('pid' => $id)
+                    array('pid' => (int)$id)
                     );
         }
        
     }
+    
+}
+/**
+     * 
+     * @global WP_Filesystem_Base $wp_filesystem
+     * @param array $post_data
+     * @return array
+     */
+function saveImageFile($post_data) 
+{
+    global $wp_filesystem;
+    
+    $cvImageHeigh = 550;
+    $cvImageWidth = 485;   
+    
+    $return = array();
+    if ($_FILES['CVImage']["tmp_name"]){
+       $tmpFile = $_FILES['CVImage']['tmp_name'];
+       switch($_FILES['CVImage']['type']){
+           case 'image/jpeg':
+               $image = imagecreatefromjpeg($tmpFile);
+               break;
+           case 'image/png':
+               $image = imagecreatefrompng($tmpFile);
+               break;
+           case 'image/gif':
+               $image = imagecreatefromgif($tmpFile);
+               break;	
+           default:
+               echo 'Image file format should be jpg, png or gif';
+               return;
+           }
+
+       $uploadDir = wp_upload_dir();
+       $fileName = $_FILES['CVImage']['name'];
+       if ( ! $wp_filesystem->put_contents( 
+               trailingslashit($uploadDir['path']).$fileName, 
+               $wp_filesystem->get_contents($tmpFile), 
+               FS_CHMOD_FILE) 
+               ) {
+           wp_die('error saving file!', 'error saving file!');
+       } else {
+           list($width, $height) = getimagesize(
+                   $tmpFile
+                   );
+           if ($width > $height) {
+               $newWidth = $cvImageWidth;
+               $divisor = $width / $cvImageWidth;
+               $newHeight = floor( $height / $divisor);
+           }
+           else {
+               $newHeight = $cvImageHeigh;
+               $divisor = $height / $cvImageHeigh;
+               $newWidth = floor( $width / $divisor );
+           }
+
+           $cvimagesmall = imagecreatetruecolor($newWidth, $newHeight);
+           imagecopyresized(
+                   $cvimagesmall,
+                   $image,
+                   0, 0, 0, 0,
+                   $newWidth,
+                   $newHeight,
+                   $width,
+                   $height
+                   );
+           $parsedFileName = \pathinfo($fileName);
+           $smallFileName = $parsedFileName['filename']."_small.jpg";
+           imagejpeg($cvimagesmall,
+                   trailingslashit(
+                           $uploadDir['path']
+                           )
+                   .$smallFileName, 100
+
+                   );
+           $return['fileName'] = $fileName;
+           $return['smallFileName'] = $smallFileName;
+           $return['subdir'] = $uploadDir['subdir'];
+           return $return;
+       }    
+    }
+    
+    $return['fileName'] = $post_data['org_img_file_name'];
+    $return['smallFileName'] = $post_data['sml_img_file_name'];
+    $return['subdir'] = $post_data['images_file_subdir'];
+    return $return;        
 }

@@ -17,9 +17,9 @@
 get_header(); ?>
 <div id="content">
     <h1 class="entry-title"><?php _e( 'Not Found', 'ab-art-new' ); ?></h1>
-            <div class="entry-content">
-                    <p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'coraline' ); ?></p>
-                    <a href="/index.php">Back to page</a>
-            </div><!-- .entry-content -->
+        <div class="entry-content">
+                <p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'coraline' ); ?></p>
+                <a href="/index.php">Back to page</a>
+        </div><!-- .entry-content -->
 </div>
 <?php get_footer();?>

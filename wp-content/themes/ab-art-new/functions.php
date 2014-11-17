@@ -11,5 +11,5 @@
  * @since 2014-10-26
  * @version 2014-10-26
  */
-update_option('siteurl','http://dev.ab-art.lt/');
-update_option('home','http://dev.ab-art.lt/');
+//update_option('siteurl','http://dev.ab-art.lt/');
+//update_option('home','http://dev.ab-art.lt/');

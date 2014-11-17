@@ -25,6 +25,17 @@ body {
     width: 327px;
     margin: 16px auto 0px auto;
 }
+
+ul#lang-flags {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    float:right;
+}
+ul#lang-flags li {
+    float:left;
+    margin-right: 3px;
+}
 /* menu  */
 .menu{
     text-align: center;

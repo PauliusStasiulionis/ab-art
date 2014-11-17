@@ -3,38 +3,45 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/images/logo.png</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/uploads/2012/07/IMG_9681-276x300.jpg</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/images/logo_big.png</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/class-wp-posts-list-table.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/post.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/uploads/2012/07/IMG_9681.jpg</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/portfolio-gallery.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/sidebar.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-includes/post-template.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/bookmark.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/style.css</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/plugin.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/edit-form-advanced.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-signup.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-includes/class-http.php</file>
-            <file>file:/D:/xampp/htdocs/abart/wp-content/themes/coraline/index.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/post.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/js/admin.js</file>
-            <file>file:/D:/xampp/htdocs/abart/wp-content/themes/coraline/functions.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/admin/portfolio_Options_view.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-includes/link-template.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/akismet/class.akismet.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/media-new.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/uploads/index.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/index.php</file>
-            <file>file:/D:/xampp/htdocs/abart/wp-content/themes/coraline/404.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/index.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/class-wp-filesystem-base.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/footer.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-admin/edit-comments.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-settings.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/contact-form-7/admin/admin.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/admin/huge_it_featured_plugins.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/Front_end/portfolio_front_end_func.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/akismet/wrapper.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/cv-plugin/admin/install.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/uploads/2012/07/IMG_9681-940x198.jpg</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/Front_end/portfolio_front_end_view.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/cv-plugin/cv-plugin.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/slimbox-plugin/slimbox.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-admin/edit-form-comment.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-includes/comment.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/google-sitemap-plugin/bws_menu/bws_menu.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/js/script.js</file>
             <file>file:/D:/xampp/htdocs/abart/wp-includes/load.php</file>
@@ -48,15 +55,22 @@
             <file>file:/D:/xampp/htdocs/abart/wp-admin/maint/repair.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/portfolio-gallery/admin/portfolio_lightbox_view.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/404.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/uploads/2012/07/IMG_9681-943x1024.jpg</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/cv-plugin/index.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/cv-plugin/admin/cv-admin.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-includes/default-filters.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/google-sitemap-plugin/google-sitemap-plugin.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/plugins/akismet/index.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/upgrade.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-content/uploads/2012/07/IMG_9681-150x150.jpg</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/class-wp-comments-list-table.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-mail.php</file>
             <file>file:/D:/xampp/htdocs/abart/piwik/libs/HTML/QuickForm2/Container.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-includes/functions.php</file>
             <file>file:/D:/xampp/htdocs/abart/piwik/plugins/CoreAdminHome/Controller.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/edit.php</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-admin/css/color-picker-rtl.min.css</file>
+            <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/comment.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/js/editor-expand.js</file>
             <file>file:/D:/xampp/htdocs/abart/wp-content/themes/ab-art-new/content.php</file>
             <file>file:/D:/xampp/htdocs/abart/wp-admin/includes/file.php</file>

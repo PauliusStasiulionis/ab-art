@@ -61,7 +61,7 @@
     <div id="wrapper">
         <div id="container">
             <div id="menubar">
-                
+                <ul id="lang-flags"><?php pll_the_languages(array('show_flags' => 1, 'show_names' => 0));?></ul>
                 <div id="logo"></div>
                 <?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>     
             </div>

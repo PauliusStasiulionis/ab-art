@@ -1579,8 +1579,17 @@ jQuery(document).ready(function(){
 			<div class="image-block">
 				<?php $imgurl=explode(";",$row->image_url); ?>
 					<?php 	if($row->image_url != ';'){ 
-                                        $extension_pos = strrpos($imgurl[0], '.'); // find position of the last dot, so where the extension starts
-                                        $thumburl = substr($imgurl[0], 0, $extension_pos) . '-'.get_option( 'thumbnail_size_w' ).'x'.get_option( 'thumbnail_size_h' ). substr($imgurl[0], $extension_pos);    
+                                        $thumburl = '';    
+                                        $beginningPos = strpos($imgurl[0], "-e");
+                                        $endPos = strpos($imgurl[0], ".", $beginningPos);
+                                        if ($beginningPos === false || $endPos === false) {
+                                            $thumburl = $imgurl[0];
+                                        } else {
+                                            $textToDelete = substr($imgurl[0], $beginningPos, $endPos  - $beginningPos);
+                                            $thumburl = str_replace($textToDelete, '', $imgurl[0]);
+                                        }
+                                        $extension_pos = strrpos($thumburl, '.'); // find position of the last dot, so where the extension starts
+                                        $thumburl = substr($thumburl, 0, $extension_pos) . '-'.get_option( 'thumbnail_size_w' ).'x'.get_option( 'thumbnail_size_h' ). substr($thumburl, $extension_pos);    
                                             ?>
 					<img id="wd-cl-img<?php echo $key; ?>" src="<?php echo $thumburl; ?>" alt="" />
 					<?php } else { ?>

@@ -827,7 +827,12 @@ $container.hugeitmicro({
 				<div class="image-block">
 					<?php $imgurl=explode(";",$row->image_url); ?>
 					<?php 	if($row->image_url != ';'){ ?>
-					<img id="wd-cl-img<?php echo $key; ?>" src="<?php echo $imgurl[0]; ?>" />
+                                        <?php 
+                                        
+                                        $extension_pos = strrpos($imgurl[0], '.'); // find position of the last dot, so where the extension starts
+                                        $thumburl = substr($imgurl[0], 0, $extension_pos) . '-300x185' . substr($imgurl[0], $extension_pos);
+                                        ?>
+					<img id="wd-cl-img<?php echo $key; ?>" src="<?php echo $thumburl; ?>" />
 					<?php } else { ?>
 					<img id="wd-cl-img<?php echo $key; ?>" src="images/noimage.jpg" />
 					<?php
@@ -1573,8 +1578,11 @@ jQuery(document).ready(function(){
 		<div class="element" tabindex="0" data-symbol="<?php echo $row->name; ?>" data-category="alkaline-earth">
 			<div class="image-block">
 				<?php $imgurl=explode(";",$row->image_url); ?>
-					<?php 	if($row->image_url != ';'){ ?>
-					<img id="wd-cl-img<?php echo $key; ?>" src="<?php echo $imgurl[0]; ?>" alt="" />
+					<?php 	if($row->image_url != ';'){ 
+                                        $extension_pos = strrpos($imgurl[0], '.'); // find position of the last dot, so where the extension starts
+                                        $thumburl = substr($imgurl[0], 0, $extension_pos) . '-'.get_option( 'thumbnail_size_w' ).'x'.get_option( 'thumbnail_size_h' ). substr($imgurl[0], $extension_pos);    
+                                            ?>
+					<img id="wd-cl-img<?php echo $key; ?>" src="<?php echo $thumburl; ?>" alt="" />
 					<?php } else { ?>
 					<img id="wd-cl-img<?php echo $key; ?>" src="images/noimage.jpg" alt="" />
 					<?php
